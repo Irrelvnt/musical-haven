@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { BsCheck } from "react-icons/bs";
 
-export default function Song({ title, artist, cover, time, selected, dark }) {
+export default function Playlist({ title, creator, cover, duration }) {
   return (
     <div className="flex items-center justify-between rounded-md">
       <div className="flex gap-4">

@@ -1,6 +1,8 @@
 const { StatusCodes } = require("http-status-codes");
 const { Builder, By, until } = require("selenium-webdriver");
 import Playlist from "../models/Playlist";
+import User from "../models/User";
+import { BadRequestError, UnauthenticatedError } from "../errors";
 
 async function get_song_url(driver, song_title) {
   let query = song_title.replace(" ", "+");
@@ -105,16 +107,56 @@ const recommendPlaylist = async (req, res) => {
   await driver.quit();
   res.status(StatusCodes.OK).json({ recommendations: [...recommendations] });
 };
+const getPlaylists = async (req, res) => {
+  const { name } = req.query;
+  if (!name) {
+    throw BadRequestError(res, "please provide a search value");
+  }
+  const data = await Playlist.find({
+    name: { $regex: name, $options: "i" },
+  });
+  res.status(StatusCodes.OK).json({ data });
+};
+
+const updateFavourites = async (req, res) => {
+  const { _id } = req.user;
+  const { songs } = req.body;
+  if (!songs)
+    throw BadRequestError(res, "please provide songs to add to favourites");
+  if (!_id) {
+    throw UnauthenticatedError(res, "please log in");
+  }
+  const data = await User.find({ _id });
+  const favourites = data.favourites;
+  for (let song of songs) {
+    if (!favourites.includes(song)) {
+      favourites.push(song);
+    }
+  }
+  res.staut(StatusCodes.OK).json({ message: "favourites playlist updated" });
+};
+
+const getFavourites = async (req, res) => {
+  const { _id } = req.user;
+  const data = await User.find({ _id });
+  res.status(StatusCodes.OK).json({ favourites: data.favourites });
+};
 
 const createPlaylist = async (req, res) => {
   const { songs, name } = req.body;
-  // const { _id } = req.user;
+  const { _id } = req.user;
   const playlist = await Playlist.create({
     name,
     songs,
-    // creator: _id,
+    creator: _id,
   });
   res.status(StatusCodes.CREATED).json({ playlist });
 };
 
-module.exports = { recommendPlaylist, createPlaylist };
+module.exports = {
+  recommendPlaylist,
+  createPlaylist,
+  getPlaylists,
+  getFavourites,
+  updateFavourites,
+};

@@ -18,6 +18,10 @@ const UserSchema = new Schema(
       required: [true, "Password is required"],
       minlength: 6,
     },
+    favourites: {
+      type: Array,
+      required: false,
+    },
   },
   {
     timestamps: true,

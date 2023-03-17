@@ -1,9 +1,6 @@
 import nc from "next-connect";
-import { getNumberOfUsers } from "../../../../controllers/userController";
-import {
-  authenticateUser,
-  authorizePermissions,
-} from "../../../../middleware/auth";
+import { authenticateUser } from "../../../../middleware/auth";
+import { getFavourites } from "../../../../controllers/playlistController";
 import connectDb from "../../../../middleware/connectDatabase";
 
 const router = nc({
@@ -16,10 +13,6 @@ const router = nc({
   },
 });
 
-router
-  .use(connectDb)
-  .use(authenticateUser)
-  .use(authorizePermissions("admin"))
-  .get(getNumberOfUsers);
+router.use(connectDb).use(authenticateUser).get(getFavourites);
 
 export default router;

@@ -14,7 +14,7 @@ export default function Card({ title, image, link = "/" }) {
           alt="card"
           className="absolute inset-0 rounded-md"
         />
-        <p className="absolute z-20 bottom-3 left-5 font-semibold text-sm ">
+        <p className="absolute z-30 bottom-3 left-5 font-semibold text-sm text-white">
           {title}
         </p>
       </div>

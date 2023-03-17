@@ -1,87 +1,16 @@
+import axios from "axios";
+import { StatusCodes } from "http-status-codes";
 import Head from "next/head";
 import Link from "next/link";
-import { HiHeart, HiPlus } from "react-icons/hi";
-import { RiFilter3Fill } from "react-icons/ri";
-import { RxShuffle } from "react-icons/rx";
-import Card from "../components/Card";
-import Song from "../components/Song";
-import Layout from "../components/Layout";
 import { useState } from "react";
-import classNames from "../utils/classNames";
+import { HiHeart, HiPlus } from "react-icons/hi";
 import { IoClose, IoCompassSharp } from "react-icons/io5";
-import { usePlaylist } from "../store/playlist";
+import { RxShuffle } from "react-icons/rx";
+import Layout from "../components/Layout";
+import Song from "../components/Song";
 import { useCreatePlaylist } from "../hooks/useCreatePlaylist";
-
-const cards = [
-  {
-    title: "Genres & Moods",
-    image: "/music.webp",
-  },
-  {
-    title: "Albums",
-    image: "/music.webp",
-  },
-  {
-    title: "Artists",
-    image: "/music.webp",
-  },
-];
-const songs = [
-  {
-    title: "Song 1",
-    artist: "Artist 1",
-    cover: "/music.webp",
-    time: "3:00",
-  },
-  {
-    title: "Song 2",
-    artist: "Artist 2",
-    cover: "/music.webp",
-    time: "3:00",
-  },
-  {
-    title: "Song 3",
-    artist: "Artist 3",
-    cover: "/music.webp",
-    time: "3:00",
-  },
-  {
-    title: "Song 1",
-    artist: "Artist 1",
-    cover: "/music.webp",
-    time: "3:00",
-  },
-  {
-    title: "Song 2",
-    artist: "Artist 2",
-    cover: "/music.webp",
-    time: "3:00",
-  },
-  {
-    title: "Song 3",
-    artist: "Artist 3",
-    cover: "/music.webp",
-    time: "3:00",
-  },
-  {
-    title: "Song 1",
-    artist: "Artist 1",
-    cover: "/music.webp",
-    time: "3:00",
-  },
-  {
-    title: "Song 2",
-    artist: "Artist 2",
-    cover: "/music.webp",
-    time: "3:00",
-  },
-  {
-    title: "Song 3",
-    artist: "Artist 3",
-    cover: "/music.webp",
-    time: "3:00",
-  },
-];
+import { usePlaylist } from "../store/playlist";
+import classNames from "../utils/classNames";
 
 const shuffleSongs = (array) => {
   var shuffled = array;
@@ -98,11 +27,20 @@ const Home = () => {
   const setPlaylist = usePlaylist((state) => state.setPlaylist);
   const playlist = usePlaylist((state) => state.playlist);
   const [createPlaylist, setCreatePlaylist] = useState(false);
+  const [selected, setSelected] = useState([]);
   const [stat, setStat] = useState(null);
   // const { data: user } = useAuth();
   const { handleChange, handleSubmit } = useCreatePlaylist();
 
   const [shuffle, setShuffle] = useState(false);
+
+  const updateFavourites = async (songs) => {
+    try {
+      await axios.post("/api/playlist/favourites", {
+        songs,
+      });
+    } catch (e) {}
+  };
   return (
     <>
       <Head>
@@ -110,9 +48,9 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <main className="text-text relative px-4 pb-8 transition w-full lg:w-fit mx-auto max-w-4xl">
+        <main className="text-text relative px-4 pb-8 transition w-full mx-auto max-w-4xl h-screen">
           {createPlaylist && (
-            <div className="absolute z-40 inset-0 mx-4">
+            <div className="absolute z-40 inset-0 px-4">
               <div
                 className={
                   stat === "loading"
@@ -120,18 +58,18 @@ const Home = () => {
                     : "hidden"
                 }
               >
-                <div className="h-12 w-12 border-4 border-t-octonary border-r-octonary border-l-octonary rounded-full animate-spin transition opacity-100" />
-                <span className="text-lg text-tertiary font-semibold mt-6">
-                  Loading...
+                <div className="h-12 w-12 border-4 border-t-tertiary border-r-tertiary border-l-tertiary rounded-full animate-spin transition opacity-100" />
+                <span className="text-lg text-gray-600 font-semibold mt-6">
+                  Crearting playlist...
                 </span>
               </div>
               <div
                 className="absolute inset-0 w-full h-full backdrop-blur-sm transition"
                 onClick={() => setCreatePlaylist(false)}
               />
-              <div className="max-w-lg w-full mx-auto bg-white rounded-lg px-4 py-3 relative z-10">
+              <div className="max-w-lg w-full mx-auto bg-card/90 rounded-lg px-4 py-3 relative z-10">
                 <div className="w-full flex justify-between">
-                  <p className="text-gray-700 font-medium text-lg">
+                  <p className="text-gray-100 font-medium text-lg">
                     Create Playlist
                   </p>
                   <IoClose
@@ -145,10 +83,10 @@ const Home = () => {
                   }}
                 >
                   <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-base font-medium text-gray-100">
                       New playlist
                     </label>
-                    <div className="mt-1 border-b border-gray-300 focus-within:border-tertiary">
+                    <div className="mt-1 border-b border-gray-100 focus-within:border-tertiary">
                       <input
                         onChange={(e) => handleChange(e)}
                         type="text"
@@ -156,16 +94,19 @@ const Home = () => {
                         id="name"
                         max={50}
                         required
-                        className="block w-full text-gray-800 border-0 border-b border-transparent bg-gray-50 focus:border-tertiary focus:ring-0 sm:text-sm"
-                        placeholder="playlist name"
+                        className="block w-full border-0 border-b
+                      text-gray-100 placeholder:text-gray-300 border-transparent
+                      bg-gray-700/70 focus:border-tertiary focus:ring-0
+                      sm:text-sm"
+                        placeholder="Song title"
                       />
                     </div>
                   </div>
-                  <p className="text-lg font-medium text-gray-700 mt-4">
-                    Songs
+                  <p className="text-lg font-medium text-gray-100 mt-4">
+                    Playlist
                   </p>
                   <div className="w-full max-h-44 overflow-auto mt-6 space-y-4">
-                    {playlist.map((item, idx) => (
+                    {selected.map((item, idx) => (
                       <div key={idx} className="flex items-center">
                         <div className="w-full rounded-lg mr-2">
                           <Song
@@ -177,8 +118,8 @@ const Home = () => {
                         </div>
                         <IoClose
                           onClick={() => {
-                            setPlaylist(
-                              playlist.filter(
+                            setSelected(
+                              selected.filter(
                                 (song) => song.title !== item.title
                               )
                             );
@@ -192,7 +133,7 @@ const Home = () => {
                     <button
                       type="submit"
                       className={classNames(
-                        playlist.length === 0
+                        selected.length === 0
                           ? "cursor-not-allowed"
                           : "md:hover:text-white md:hover:bg-[#59b7c3]",
                         "w-full max-w-[15rem] mx-auto flex justify-center p-2 md:py-2 text-sm md:text-base font-medium rounded-md text-[#21565a] bg-[#b3e5ec]  md:px-6 active:scale-95 transition"
@@ -265,44 +206,49 @@ const Home = () => {
                 Discover
               </p>
             </Link>
-            {cards.map((item, idx) => (
-              <div key={idx + 1}>
-                <Card title={item.title} image={item.image} />
-              </div>
-            ))}
           </div>
           <div className="flex justify-between  items-center mt-10 mb-4 relative z-10">
-            <p className="font-semibold text-lg">Songs</p>
+            <p className="font-semibold text-lg">Currently playing</p>
             <div className="flex gap-4 items-center">
               <RxShuffle
                 size={18}
                 color="#e1e1e2"
-                onClick={() => setShuffle(!shuffle)}
+                onClick={() => {
+                  setShuffle(true);
+                  setTimeout(() => {
+                    setShuffle(false);
+                  }, 100);
+                }}
                 className={classNames(
                   shuffle ? "bg-tertiary" : "",
                   "hover:bg-primary/40 rounded-full cursor-pointer"
                 )}
               />
-              <RiFilter3Fill
+              <HiHeart
+                onClick={() => {
+                  if (selected.length === 0) {
+                    return;
+                  }
+                  updateFavourites(selected);
+                }}
                 size={20}
-                color="#e1e1e2"
-                className="hover:bg-primary/40 rounded-full cursor-pointer"
+                className="hover:bg-primary/40 rounded-full fill-gray-200 cursor-pointer"
               />
             </div>
           </div>
           <div className="flex flex-col gap-4 mt-4 overflow-y-auto relative z-10">
-            {(shuffle ? shuffleSongs(songs) : songs).map((item, idx) => (
+            {(shuffle ? shuffleSongs(playlist) : playlist).map((item, idx) => (
               <div
                 key={idx}
                 onClick={() => {
-                  playlist.includes(item)
-                    ? setPlaylist(playlist.filter((i) => i !== item))
-                    : setPlaylist([...playlist, item]);
+                  selected.includes(item)
+                    ? setSelected(selected.filter((i) => i !== item))
+                    : setSelected([...selected, item]);
                 }}
                 className="hover:bg-primary/10 transition pr-2 rounded-md cursor-pointer"
               >
                 <Song
-                  selected={playlist.includes(item)}
+                  selected={selected.includes(item)}
                   title={item.title}
                   cover={item.cover}
                   time={item.time}
@@ -310,6 +256,16 @@ const Home = () => {
                 />
               </div>
             ))}
+            {playlist.length === 0 && (
+              <div className="space-y-4">
+                <p className="text-center font-bold text-lg text-gray-200 mt-12">
+                  Nothing to show
+                </p>
+                <p className="text-center text-gray-400 mt-12">
+                  Start by searching for a playlist
+                </p>
+              </div>
+            )}
           </div>
         </main>
       </Layout>

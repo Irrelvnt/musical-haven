@@ -1,37 +1,19 @@
 import { useState } from "react";
+import { AiFillPlayCircle } from "react-icons/ai";
+import { FaSearch } from "react-icons/fa";
 import { IoCompassSharp } from "react-icons/io5";
 import Layout from "../components/layout";
 import Song from "../components/song";
-
-const results = [
-  {
-    id: 1,
-    title: "Video 1",
-    thumbnail: "/music.webp",
-    channel: "Channel 1",
-    duration: "3:14",
-  },
-  {
-    id: 2,
-    title: "Video 2",
-    thumbnail: "/music.webp",
-    channel: "Channel 2",
-    duration: "3:14",
-  },
-  {
-    id: 3,
-    title: "Video 3",
-    thumbnail: "/music.webp",
-    channel: "Channel 3",
-    duration: "3:14",
-  },
-];
+import { useSearch } from "../hooks/useSearch";
 
 export default function Discover() {
+  const [results, setResults] = useState([]);
   const [selected, setSelected] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { handleChange, handleSubmit } = useSearch(setResults);
   return (
     <Layout>
-      <main className="relative w-screen max-w-4xl mx-auto">
+      <main className="relative w-screen h-screen max-w-4xl mx-auto">
         <div className="fixed inset-0 z-0 transform-gpu overflow-hidden blur-3xl ">
           <svg
             className="relative opacity-100 left-[calc(50%-11rem)] h-[21.1875rem] max-w-none -translate-x-1/2 rotate-[30deg] sm:left-[calc(50%-30rem)] sm:h-[42.375rem]"
@@ -59,53 +41,101 @@ export default function Discover() {
         </div>
         <div className="px-4 lg:px-6 relative z-20">
           <div className="rounded-lg px-4 py-3">
-            <div className="flex items-center">
-              <IoCompassSharp className="w-6 h-6 fill-gray-100" />
-              <p className="text-xl font-medium text-gray-100 ml-4">Discover</p>
-            </div>
-            <div className="mt-4">
-              <label
-                htmlFor="email"
-                className="block text-md font-medium text-gray-100"
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <IoCompassSharp className="w-6 h-6 fill-gray-100" />
+                <p className="text-xl font-medium text-gray-100 ml-4">
+                  Discover
+                </p>
+              </div>
+              <div
+                className="flex items-center hover:bg-primary/20 transition rounded-lg px-2 cursor-pointer mt-1"
+                onClick={() => {
+                  console.log(selected);
+                }}
               >
-                Search
-              </label>
-              <div className="mt-1 border-b border-gray-100 focus-within:border-tertiary">
-                <input
-                  onChange={(e) => handleChange(e)}
-                  type="text"
-                  name="email"
-                  id="email"
-                  max={50}
-                  required
-                  className="block w-full border-0 border-b text-gray-100 placeholder:text-gray-300 border-transparent bg-gray-800 focus:border-tertiary focus:ring-0 sm:text-sm"
-                  placeholder="search for a video"
-                />
-              </div>
-              <div className="flex flex-col space-y-2 mt-8">
-                {results.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="hover:bg-primary/20 rounded-lg transition"
-                    onClick={() => {
-                      if (selected.includes(item)) {
-                        setSelected(selected.filter((i) => i !== item));
-                      } else {
-                        setSelected([...selected, item]);
-                      }
-                    }}
-                  >
-                    <Song
-                      artist={item.channel}
-                      title={item.title}
-                      cover={item.thumbnail}
-                      time={item.duration}
-                      selected={selected.includes(item)}
-                    />
-                  </div>
-                ))}
+                <p className="text-base font-medium text-gray-100 mb-1 mr-2">
+                  play
+                </p>
+                <AiFillPlayCircle className="w-4 h-4 fill-gray-100" />
               </div>
             </div>
+            <form
+              onSubmit={(e) => handleSubmit(e, setLoading)}
+              className="mt-8"
+            >
+              <div className="mt-4">
+                <label
+                  htmlFor="email"
+                  className="block text-lg font-medium text-gray-100"
+                >
+                  Search
+                </label>
+                <div className="mt-1 border-b relative items-center border-gray-100 focus-within:border-tertiary flex justify-between">
+                  <input
+                    onChange={(e) => handleChange(e)}
+                    type="text"
+                    name="name"
+                    id="name"
+                    max={50}
+                    required
+                    className="block w-full border-0 border-b text-gray-100 placeholder:text-gray-300 border-transparent bg-gray-700/70 focus:border-tertiary focus:ring-0 sm:text-sm"
+                    placeholder="Playlist title"
+                  />
+                  <button
+                    type="submit"
+                    className="hover:bg-primary/20 absolute right-2 p-1 transition bg-transparent rounded-full"
+                  >
+                    <FaSearch className="w-5 h-5 fill-white" />
+                  </button>
+                </div>
+                <div className="flex flex-col space-y-2 mt-6 relative z-20">
+                  {results?.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="hover:bg-primary/20 transition rounded-lg pr-2 cursor-pointer"
+                      onClick={() => {
+                        if (selected.includes(item)) {
+                          setSelected(selected.filter((i) => i !== item));
+                        } else {
+                          setSelected([...selected, item]);
+                        }
+                      }}
+                    >
+                      <Song
+                        artist={item.channel}
+                        title={item.title}
+                        cover={item.thumbnail}
+                        time="3:00"
+                        selected={selected.includes(item)}
+                      />
+                    </div>
+                  ))}
+                  {results.length === 0 && !loading && (
+                    <div className="space-y-4">
+                      <p className="text-center font-bold text-lg text-gray-200 mt-12">
+                        Nothing to show
+                      </p>
+                      <p className="text-center text-gray-400 mt-12">
+                        Start by searching for a playlist
+                      </p>
+                    </div>
+                  )}
+                  <div
+                    className={
+                      loading
+                        ? " flex flex-col items-center justify-center transition rounded-xl z-40 mt-12"
+                        : "hidden"
+                    }
+                  >
+                    <div className="h-12 w-12 border-4 border-t-tertiary border-r-tertiary border-l-tertiary rounded-full animate-spin transition opacity-100" />
+                    <span className="text-lg text-gray-100 font-semibold mt-6">
+                      Searching...
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </main>

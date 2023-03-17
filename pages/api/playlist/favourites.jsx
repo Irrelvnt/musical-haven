@@ -1,5 +1,6 @@
 import nc from "next-connect";
-import { recommendPlaylist } from "../../../controllers/playlistController";
+import { updateFavourites } from "../../../controllers/playlistController";
+import connectDb from "../../../middleware/connectDatabase";
 
 const router = nc({
   onError: (err, req, res) => {
@@ -11,6 +12,6 @@ const router = nc({
   },
 });
 
-router.get(recommendPlaylist);
+router.use(connectDb).post(updateFavourites);
 
 export default router;

@@ -4,6 +4,7 @@ import { AiFillGoogleCircle } from "react-icons/ai";
 import { BsFacebook, BsFillArrowLeftCircleFill } from "react-icons/bs";
 import { useLogin } from "../hooks/useLogin";
 import Layout from "../components/Layout";
+import { IoLogIn } from "react-icons/io5";
 
 export default function Login() {
   const [error, setError] = useState(false);
@@ -70,7 +71,7 @@ export default function Login() {
                   </span>
                 </div>
                 <div className="flex gap-3 items-center mx-2">
-                  <img src="/logo.svg" className="h-6 md:h-6 ml-1" />
+                  <IoLogIn className="fill-gray-700 w-7 h-7" />
                   <h1 className="text-xl first-letter:md:text-[1.8rem] font-bold text-gray-700">
                     Welcome back!
                   </h1>
@@ -82,9 +83,9 @@ export default function Login() {
                   <div>
                     <a
                       href="#"
-                      className="w-full inline-flex justify-center py-2 px-4 border-2 border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 lg:hover:bg-gray-50 transition"
+                      className="w-full inline-flex justify-center py-2 px-4 border-2 border-gray-50 rounded-md shadow-sm bg-gray-600 text-sm font-medium text-gray-100 lg:hover:bg-gray-50 transition"
                     >
-                      <BsFacebook className="h-5 w-8 drop-shadow-sm fill-gray-500" />
+                      <BsFacebook className="h-5 w-8 drop-shadow-sm fill-gray-100" />
                       Facebook
                     </a>
                   </div>
@@ -92,9 +93,9 @@ export default function Login() {
                   <div>
                     <a
                       href="#"
-                      className="w-full inline-flex justify-center py-2 px-4 border-2 border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition"
+                      className="w-full inline-flex justify-center py-2 px-4 border-2 border-gray-50 rounded-md shadow-sm bg-gray-600 text-sm font-medium text-gray-100 hover:bg-gray-50 transition"
                     >
-                      <AiFillGoogleCircle className="h-5 w-8 drop-shadow-sm fill-gray-500" />
+                      <AiFillGoogleCircle className="h-5 w-8 drop-shadow-sm fill-gray-100" />
                       Google
                     </a>
                   </div>
