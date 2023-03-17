@@ -66,9 +66,6 @@ export default function Login() {
                   }
                 >
                   <div className="h-12 w-12 border-4 border-t-octonary border-r-octonary border-l-octonary rounded-full animate-spin transition opacity-100" />
-                  <span className="text-lg text-tertiary font-semibold mt-6">
-                    Loading...
-                  </span>
                 </div>
                 <div className="flex gap-3 items-center mx-2">
                   <IoLogIn className="fill-gray-700 w-7 h-7" />
@@ -146,7 +143,7 @@ export default function Login() {
                               max={50}
                               required
                               className="block w-full border-0 border-b border-transparent bg-gray-50 focus:border-tertiary focus:ring-0 sm:text-sm"
-                              placeholder="Adress e-mail"
+                              placeholder="Email adress"
                             />
                           </div>
                         </div>
@@ -172,7 +169,7 @@ export default function Login() {
                               autoComplete="current-password"
                               required
                               className="block w-full border-0 border-b border-transparent bg-gray-50 focus:border-tertiary focus:ring-0 sm:text-sm"
-                              placeholder="Mot de passe"
+                              placeholder="Password"
                             />
                           </div>
                         </div>

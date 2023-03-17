@@ -119,7 +119,7 @@ const getPlaylists = async (req, res) => {
 };
 
 const updateFavourites = async (req, res) => {
-  const { _id } = req.user;
+  const _id = req.user.userId;
   const { songs } = req.body;
   if (!songs)
     throw BadRequestError(res, "please provide songs to add to favourites");
@@ -144,7 +144,8 @@ const getFavourites = async (req, res) => {
 
 const createPlaylist = async (req, res) => {
   const { songs, name } = req.body;
-  const { _id } = req.user;
+  console.log(req.user);
+  const _id = req.user.userId;
   const playlist = await Playlist.create({
     name,
     songs,

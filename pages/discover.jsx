@@ -129,9 +129,6 @@ export default function Discover() {
                     }
                   >
                     <div className="h-12 w-12 border-4 border-t-tertiary border-r-tertiary border-l-tertiary rounded-full animate-spin transition opacity-100" />
-                    <span className="text-lg text-gray-100 font-semibold mt-6">
-                      Searching...
-                    </span>
                   </div>
                 </div>
               </div>

@@ -8,7 +8,7 @@ const authenticateUser = async (req, res, next) => {
 
   try {
     if (!refreshToken) {
-      return UnauthenticatedError(res, "Authentication Invalid hhh");
+      return UnauthenticatedError(res, "Invalid");
     }
     if (accessToken) {
       const payload = isTokenValid(accessToken);
@@ -23,7 +23,7 @@ const authenticateUser = async (req, res, next) => {
     });
 
     if (!existingToken || !existingToken?.isValid) {
-      UnauthenticatedError(res, "Authentication Invalid");
+      UnauthenticatedError(res, "Invalid");
     }
 
     attachCookiesToResponse({
@@ -36,7 +36,7 @@ const authenticateUser = async (req, res, next) => {
     req.user = payload.user;
     await next();
   } catch (error) {
-    return UnauthenticatedError(res, "Authentication Invalid");
+    return UnauthenticatedError(res, "Invalid");
   }
 };
 

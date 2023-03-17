@@ -65,9 +65,6 @@ export default function Register() {
                   }
                 >
                   <div className="h-12 w-12 border-4 border-t-tertiary border-r-tertiary border-l-teritary rounded-full animate-spin transition opacity-100" />
-                  <span className="text-lg text-tertiary font-semibold mt-6">
-                    Loading...
-                  </span>
                 </div>
                 <div className="flex gap-3 items-center mx-2">
                   <IoLogIn className="fill-gray-700 w-7 h-7" />{" "}

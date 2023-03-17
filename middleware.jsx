@@ -23,9 +23,9 @@ export async function middleware(request) {
 
   if (
     verifiedRefreshToken &&
-    ["/", "/register", "/login", "/survey"].includes(request.nextUrl.pathname)
+    ["/register", "/login", "/survey"].includes(request.nextUrl.pathname)
   ) {
-    return NextResponse.redirect(new URL("/me", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 }
 
