@@ -18,7 +18,7 @@ export default function Song({ title, artist, cover, time, selected }) {
             width={50}
             height={50}
             alt="cover"
-            className="rounded-l-lg"
+            className="rounded-lg"
           />
         </div>
         <div className="flex flex-col justify-around px-2">

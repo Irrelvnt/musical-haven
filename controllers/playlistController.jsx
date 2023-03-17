@@ -1,5 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 const { Builder, By, until } = require("selenium-webdriver");
+const Playlist = require("../../models/Playlist");
 
 async function get_song_url(driver, song_title) {
   let query = song_title.replace(" ", "+");
@@ -106,7 +107,14 @@ const recommendPlaylist = async (req, res) => {
 };
 
 const createPlaylist = async (req, res) => {
-  const { selected, playlistName } = req.body;
-  };
+  const { songs, name } = req.body;
+  const { _id } = req.user;
+  const playlist = await Playlist.create({
+    name,
+    songs,
+    creator: _id,
+  });
+  res.status(StatusCodes.CREATED).json({ playlist });
+};
 
 module.exports = { recommendPlaylist, createPlaylist };

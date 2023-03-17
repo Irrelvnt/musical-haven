@@ -3,9 +3,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment } from "react";
 import { AiFillHome } from "react-icons/ai";
-import { FaBook } from "react-icons/fa";
+import { BsFillMusicPlayerFill } from "react-icons/bs";
 import { IoHelpBuoySharp, IoLogOut } from "react-icons/io5";
 import { MdAccountCircle, MdPrivacyTip } from "react-icons/md";
+import { FaMusic } from "react-icons/fa";
 import classNames from "../utils/classNames";
 
 const navigation = [
@@ -18,7 +19,13 @@ const navigation = [
   {
     name: "My playlists",
     href: "/me/myplaylists",
-    icon: <FaBook className="fill-white h-6 w-6" alt="ebook" />,
+    icon: <BsFillMusicPlayerFill className="fill-white h-6 w-6" alt="ebook" />,
+    current: false,
+  },
+  {
+    name: "Play now",
+    href: "/me/player",
+    icon: <FaMusic className="fill-white h-6 w-6" alt="ebook" />,
     current: false,
   },
 ];
@@ -83,7 +90,7 @@ export default function Sidemenu({ sidebarOpen, setSidebarOpen }) {
                     className={classNames(
                       router.asPath === item.href
                         ? "bg-tertiary rounded-md"
-                        : "bg-primary/40 rounded-md  sm:hover:bg-secondary/40",
+                        : "bg-primary/10 rounded-md  sm:hover:bg-secondary/40",
                       "group flex items-center px-2 py-2 text-base font-medium"
                     )}
                     aria-current={item.current ? "page" : undefined}

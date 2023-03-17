@@ -1,12 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
 
-const useRegister = (setError) => {
+export const useRegister = () => {
   const [values, setValues] = useState({
-    name: "",
-    surname: "",
     email: "",
-    phone: "",
     password: "",
   });
 
@@ -19,38 +16,28 @@ const useRegister = (setError) => {
     const cookie = `${name}=${value}; Path=/; Max-Age=120; SameSite=Lax`;
     document.cookie = cookie;
   };
-  const handleSubmit = async (event, informations, setPage) => {
+  const handleSubmit = async (event, setStat) => {
     event.preventDefault();
-    if (values.phone.length !== 10) {
-      setError("Gsm invalide");
-      return;
-    }
+    setStat("loading");
     if (values.password.length > 20 || values.password.length < 6) {
-      setError("Mot de passe invalide");
+      setStat("error");
       return;
     }
     if (values.email.length < 7 || values.email.length > 50) {
-      setError("Email invalide");
+      setStat("error");
       return;
     }
-    if (values.surname.length > 20 || values.surname.length < 3) {
-      return;
-    }
-    if (values.name.length > 20 || values.name.length < 3) {
-      return;
-    }
-    setError(false);
+
     try {
       await axios.post("/api/auth/register", {
         ...values,
-        informations,
       });
       setCookie("email", values.email);
-      setPage("Payment");
-    } catch (e) {}
+      setStat("success");
+    } catch (e) {
+      setStat("error");
+    }
   };
 
-  return { handleChange, handleSubmit, values };
+  return { handleChange, handleSubmit };
 };
-
-export default useRegister;

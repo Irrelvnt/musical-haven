@@ -1,6 +1,6 @@
 import nc from "next-connect";
-import { login } from "../../../../controllers/authController";
-import connectDb from "../../../../middleware/connectDatabase";
+import { login } from "../../../controllers/authController";
+import connectDb from "../../../middleware/connectDatabase";
 
 const router = nc({
   onError: (err, req, res) => {

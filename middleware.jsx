@@ -13,6 +13,13 @@ export async function middleware(request) {
   if (request.nextUrl.pathname.startsWith("/me") && !verifiedRefreshToken) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
+  if (
+    (request.nextUrl.asPath === "/login" ||
+      request.nextUrl.asPath === "/register") &&
+    verifiedRefreshToken
+  ) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
 
   if (
     verifiedRefreshToken &&

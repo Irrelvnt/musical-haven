@@ -211,6 +211,13 @@ export default function Login() {
                   </form>
                 </div>
               </div>
+              <Link
+                href="/register"
+                className="text-base text-white text-center w-full mt-2"
+              >
+                Don't have an account?{" "}
+                <span className="hover:underline">create one</span>
+              </Link>
             </div>
           </main>
         </div>

@@ -8,6 +8,9 @@ import Song from "../components/Song";
 import Layout from "../components/Layout";
 import { useState } from "react";
 import classNames from "../utils/classNames";
+import { IoClose } from "react-icons/io5";
+import { usePlaylist } from "../store/playlist";
+import { useCreatePlaylist } from "../hooks/useCreatePlaylist";
 
 const cards = [
   {
@@ -97,6 +100,13 @@ const shuffleSongs = (array) => {
 
 const Home = () => {
   const [selected, setSelected] = useState([]);
+  const setPlaylist = usePlaylist((state) => state.setPlaylist);
+  const setName = usePlaylist((state) => state.setName);
+  const [createPlaylist, setCreatePlaylist] = useState(false);
+  const [stat, setStat] = useState(null);
+  // const { data: user } = useAuth();
+  const { handleChange, handleSubmit } = useCreatePlaylist();
+
   const [shuffle, setShuffle] = useState(false);
   return (
     <>
@@ -106,6 +116,88 @@ const Home = () => {
       </Head>
       <Layout>
         <main className="text-text relative px-4 pb-8 transition w-full lg:w-fit mx-auto max-w-4xl">
+          {createPlaylist && (
+            <div className="absolute z-40 inset-0">
+              <div
+                className="absolute inset-0 w-full h-full backdrop-blur-sm transition"
+                onClick={() => setCreatePlaylist(false)}
+              />
+              <div className="max-w-lg w-full mx-auto bg-white rounded-lg px-4 py-3 relative z-10">
+                <div className="w-full flex justify-between">
+                  <p className="text-gray-700 font-medium text-lg">
+                    Create Playlist
+                  </p>
+                  <IoClose
+                    className="w-6 h-6 fill-tertiary hover:bg-primary/40 transition cursor-pointer rounded-full"
+                    onClick={() => setCreatePlaylist(false)}
+                  />
+                </div>
+                <form
+                  onSubmit={(e) => {
+                    handleSubmit(e, setStat);
+                  }}
+                >
+                  <div className="mt-4">
+                    <label className="block text-sm font-medium text-gray-700">
+                      New playlist
+                    </label>
+                    <div className="mt-1 border-b border-gray-300 focus-within:border-tertiary">
+                      <input
+                        onChange={(e) => handleChange(e)}
+                        type="text"
+                        name="name"
+                        id="name"
+                        max={50}
+                        required
+                        className="block w-full text-gray-800 border-0 border-b border-transparent bg-gray-50 focus:border-tertiary focus:ring-0 sm:text-sm"
+                        placeholder="playlist name"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-lg font-medium text-gray-700 mt-4">
+                    Songs
+                  </p>
+                  <div className="w-full max-h-44 overflow-auto mt-6 space-y-4">
+                    {selected.map((item, idx) => (
+                      <div key={idx} className="flex items-center">
+                        <div className="w-full rounded-lg mr-2">
+                          <Song
+                            title={item.title}
+                            artist={item.artist}
+                            cover={item.cover}
+                            time={item.time}
+                          />
+                        </div>
+                        <IoClose
+                          onClick={() => {
+                            setSelected(
+                              selected.filter(
+                                (song) => song.title !== item.title
+                              )
+                            );
+                          }}
+                          className="w-6 h-6 fill-secondary hover:bg-primary/40 transition cursor-pointer rounded-full mr-2"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="pt-4">
+                    <button
+                      type="submit"
+                      className={classNames(
+                        selected.length === 0
+                          ? "cursor-not-allowed"
+                          : "md:hover:text-white md:hover:bg-[#59b7c3]",
+                        "w-full max-w-[15rem] mx-auto flex justify-center p-2 md:py-2 text-sm md:text-base font-medium rounded-md text-[#21565a] bg-[#b3e5ec]  md:px-6 active:scale-95 transition"
+                      )}
+                    >
+                      create playlist
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
           <div className="fixed inset-0 z-0 transform-gpu overflow-hidden blur-3xl ">
             <svg
               className="relative opacity-100 left-[calc(50%-11rem)] h-[21.1875rem] max-w-none -translate-x-1/2 rotate-[30deg] sm:left-[calc(50%-30rem)] sm:h-[42.375rem]"
@@ -133,18 +225,14 @@ const Home = () => {
           </div>
           <div className="flex justify-between items-center mt-10 mb-4 relative z-10">
             <p className="font-semibold text-lg">Explore</p>
-            <span className="flex items-center gap-4">
-              <button aria-label="add">
-                <HiPlus
-                  size={20}
-                  className="hover:bg-primary/40 rounded-full fill-white"
-                />
-              </button>
-              <button aria-label="filter">
-                <RiFilter3Fill
-                  size={20}
-                  className="hover:bg-primary/40 rounded-full fill-white"
-                />
+            <span className="flex items-center">
+              <button
+                aria-label="add"
+                onClick={() => setCreatePlaylist(true)}
+                className="flex items-center hover:bg-primary/40 px-1 rounded-lg transition"
+              >
+                <HiPlus className=" w-5 h-5 fill-white mr-2" />
+                <p className="mb-1">create playlist</p>
               </button>
             </span>
           </div>

@@ -2,13 +2,12 @@ import Link from "next/link";
 import { useState } from "react";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import { BsFacebook, BsFillArrowLeftCircleFill } from "react-icons/bs";
-import { useLogin } from "../hooks/useLogin";
+import { useRegister } from "../hooks/useRegister";
 import Layout from "../components/Layout";
 
 export default function Register() {
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { handleChange, handleSubmit } = useLogin();
+  const [stat, setStat] = useState(null);
+  const { handleChange, handleSubmit } = useRegister();
   const [opacity, setOpacity] = useState(0);
   setTimeout(() => {
     setOpacity(1);
@@ -20,7 +19,7 @@ export default function Register() {
         style={{ opacity }}
       >
         <div className="relative h-[85vh] flex items-center justify-center">
-          <div className="absolute inset-0 z-0 transform-gpu overflow-hidden blur-3xl ">
+          <div className="fixed inset-0 z-0 transform-gpu overflow-hidden blur-3xl ">
             <svg
               className="relative opacity-100 left-[calc(50%-11rem)] h-[21.1875rem] max-w-none -translate-x-1/2 rotate-[30deg] sm:left-[calc(50%-30rem)] sm:h-[42.375rem]"
               viewBox="0 0 1155 678"
@@ -59,12 +58,12 @@ export default function Register() {
               <div className="bg-white backdrop-blur-md relative shadow-lg rounded-xl mt-4 pt-2">
                 <div
                   className={
-                    loading
+                    stat === "loading"
                       ? "absolute inset-0 bg-white/60 flex flex-col items-center justify-center transition rounded-xl z-40"
                       : "hidden"
                   }
                 >
-                  <div className="h-12 w-12 border-4 border-t-octonary border-r-octonary border-l-octonary rounded-full animate-spin transition opacity-100" />
+                  <div className="h-12 w-12 border-4 border-t-tertiary border-r-tertiary border-l-teritary rounded-full animate-spin transition opacity-100" />
                   <span className="text-lg text-tertiary font-semibold mt-6">
                     Loading...
                   </span>
@@ -109,7 +108,7 @@ export default function Register() {
                   </div>
                   <div className="relative flex justify-center text-sm">
                     <span className="px-2 bg-white ">
-                      {error ? (
+                      {stat === "error" ? (
                         <span className="text-red-400 font-semibold">
                           Email already in use!
                         </span>
@@ -121,10 +120,9 @@ export default function Register() {
                     </span>
                   </div>
                 </div>
-
                 <div className="mt-2">
                   <form
-                    onSubmit={(e) => handleSubmit(e, setError, setLoading)}
+                    onSubmit={(e) => handleSubmit(e, setStat)}
                     className="space-y-6"
                   >
                     <div className="mx-3">
@@ -197,13 +195,13 @@ export default function Register() {
                           href="/login"
                           className="font-medium text-tertiary lg:hover:text-tertiary lg:hover:underline transition"
                         >
-                          Log in
+                          Already have an account?
                         </Link>
                       </div>
                     </div>
                     <button
                       type="submit"
-                      disabled={loading}
+                      disabled={stat === "loading"}
                       className="w-full flex justify-center py-3 px-4  rounded-b-xl shadow-sm text-sm font-medium text-white bg-tertiary lg:hover:bg-octonary transition border border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-tertiary"
                     >
                       Sign up
