@@ -2,6 +2,7 @@ import { useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import Sidemenu from "./Sidemenu";
 import classNames from "../utils/classNames";
+import AudioPlayer from "./AudioPlayer";
 
 const genericHamburgerLine = `h-1 w-6 my-1 rounded-full bg-black transition ease transform duration-300`;
 
@@ -54,6 +55,9 @@ export default function Layout({ children }) {
       </div>
       <Sidemenu sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       {children}
+      <div className="fixed bottom-0 w-full z-20">
+        <AudioPlayer />
+      </div>
     </div>
   );
 }

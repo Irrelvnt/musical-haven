@@ -8,15 +8,11 @@ import Song from "../components/Song";
 import Layout from "../components/Layout";
 import { useState } from "react";
 import classNames from "../utils/classNames";
-import { IoClose } from "react-icons/io5";
+import { IoClose, IoCompassSharp } from "react-icons/io5";
 import { usePlaylist } from "../store/playlist";
 import { useCreatePlaylist } from "../hooks/useCreatePlaylist";
 
 const cards = [
-  {
-    title: "Discover",
-    image: "/music.webp",
-  },
   {
     title: "Genres & Moods",
     image: "/music.webp",
@@ -249,12 +245,24 @@ const Home = () => {
           </div>
           <div className="flex gap-4 w-full mt-4 overflow-auto sm:overflow-hidden">
             <Link
-              href="/"
+              href="/favourites"
               className="relative w-36 h-36 bg-card rounded-md transition hover:scale-105"
             >
               <HiHeart size={"2rem"} color="red" className="mx-14 mt-12" />
               <p className="absolute z-20 bottom-3 left-5 font-semibold text-sm ">
                 Favorites
+              </p>
+            </Link>
+            <Link
+              href="/discover"
+              className="relative w-36 h-36 bg-card rounded-md transition hover:scale-105"
+            >
+              <IoCompassSharp
+                size={"2rem"}
+                className="mx-14 mt-12 fill-gray-200"
+              />
+              <p className="absolute z-20 bottom-3 left-5 font-semibold text-sm ">
+                Discover
               </p>
             </Link>
             {cards.map((item, idx) => (
