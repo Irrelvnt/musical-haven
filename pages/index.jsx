@@ -99,9 +99,8 @@ const shuffleSongs = (array) => {
 };
 
 const Home = () => {
-  const [selected, setSelected] = useState([]);
   const setPlaylist = usePlaylist((state) => state.setPlaylist);
-  const setName = usePlaylist((state) => state.setName);
+  const playlist = usePlaylist((state) => state.playlist);
   const [createPlaylist, setCreatePlaylist] = useState(false);
   const [stat, setStat] = useState(null);
   // const { data: user } = useAuth();
@@ -117,7 +116,19 @@ const Home = () => {
       <Layout>
         <main className="text-text relative px-4 pb-8 transition w-full lg:w-fit mx-auto max-w-4xl">
           {createPlaylist && (
-            <div className="absolute z-40 inset-0">
+            <div className="absolute z-40 inset-0 mx-4">
+              <div
+                className={
+                  stat === "loading"
+                    ? "absolute inset-0 bg-white/60 flex flex-col items-center justify-center transition rounded-xl z-40"
+                    : "hidden"
+                }
+              >
+                <div className="h-12 w-12 border-4 border-t-octonary border-r-octonary border-l-octonary rounded-full animate-spin transition opacity-100" />
+                <span className="text-lg text-tertiary font-semibold mt-6">
+                  Loading...
+                </span>
+              </div>
               <div
                 className="absolute inset-0 w-full h-full backdrop-blur-sm transition"
                 onClick={() => setCreatePlaylist(false)}
@@ -158,7 +169,7 @@ const Home = () => {
                     Songs
                   </p>
                   <div className="w-full max-h-44 overflow-auto mt-6 space-y-4">
-                    {selected.map((item, idx) => (
+                    {playlist.map((item, idx) => (
                       <div key={idx} className="flex items-center">
                         <div className="w-full rounded-lg mr-2">
                           <Song
@@ -170,8 +181,8 @@ const Home = () => {
                         </div>
                         <IoClose
                           onClick={() => {
-                            setSelected(
-                              selected.filter(
+                            setPlaylist(
+                              playlist.filter(
                                 (song) => song.title !== item.title
                               )
                             );
@@ -185,7 +196,7 @@ const Home = () => {
                     <button
                       type="submit"
                       className={classNames(
-                        selected.length === 0
+                        playlist.length === 0
                           ? "cursor-not-allowed"
                           : "md:hover:text-white md:hover:bg-[#59b7c3]",
                         "w-full max-w-[15rem] mx-auto flex justify-center p-2 md:py-2 text-sm md:text-base font-medium rounded-md text-[#21565a] bg-[#b3e5ec]  md:px-6 active:scale-95 transition"
@@ -276,14 +287,14 @@ const Home = () => {
               <div
                 key={idx}
                 onClick={() => {
-                  selected.includes(item)
-                    ? setSelected(selected.filter((i) => i !== item))
-                    : setSelected([...selected, item]);
+                  playlist.includes(item)
+                    ? setPlaylist(playlist.filter((i) => i !== item))
+                    : setPlaylist([...playlist, item]);
                 }}
                 className="hover:bg-primary/10 transition pr-2 rounded-md cursor-pointer"
               >
                 <Song
-                  selected={selected.includes(item)}
+                  selected={playlist.includes(item)}
                   title={item.title}
                   cover={item.cover}
                   time={item.time}
