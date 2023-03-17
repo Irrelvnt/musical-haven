@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { BsCheck } from "react-icons/bs";
 
-export default function Song({ title, artist, cover, time, selected }) {
+export default function Song({ title, artist, cover, time, selected, dark }) {
   return (
     <div className="flex items-center justify-between rounded-md">
       <div className="flex gap-4">
@@ -22,7 +22,15 @@ export default function Song({ title, artist, cover, time, selected }) {
           />
         </div>
         <div className="flex flex-col justify-around px-2">
-          <p className="font-semibold text-lg">{title}</p>
+          <p
+            className={
+              dark
+                ? "font-semibold text-lg text-gray-100"
+                : "font-semibold text-lg"
+            }
+          >
+            {title}
+          </p>
           <p className="font-semibold text-sm text-textlight">{artist}</p>
         </div>
       </div>

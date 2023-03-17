@@ -12,11 +12,11 @@ const PLaylistSchema = new Schema(
       type: Array,
       required: [true, "Songs are required"],
     },
-    creator: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: [true, "Creator is required"],
-    },
+    // creator: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "User",
+    //   required: [true, "Creator is required"],
+    // },
   },
   {
     timestamps: true,
