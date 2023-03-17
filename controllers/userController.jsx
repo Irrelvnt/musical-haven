@@ -1,25 +1,7 @@
 import { StatusCodes } from "http-status-codes";
-import {
-  BadRequestError,
-  NotFoundError,
-  UnauthenticatedError,
-} from "../errors";
+import { BadRequestError, UnauthenticatedError } from "../errors";
 import User from "../models/User";
-import {
-  attachCookiesToResponse,
-  checkPermissions,
-  createTokenUser,
-} from "../utils";
-
-const getSingleUser = async (req, res) => {
-  const { email } = req.query;
-  const { user } = await User.findOne({ email }).select("-password");
-  if (!user) {
-    throw new NotFoundError(`No user with email : ${email}`);
-  }
-  checkPermissions(req.user, user._id);
-  res.status(StatusCodes.OK).json({ user });
-};
+import { attachCookiesToResponse, createTokenUser } from "../utils";
 
 const showCurrentUser = async (req, res) => {
   const user = await User.findOne({ _id: req.user.userId }).select("-password");

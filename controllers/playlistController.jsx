@@ -105,4 +105,8 @@ const recommendPlaylist = async (req, res) => {
   res.status(StatusCodes.OK).json({ recommendations: [...recommendations] });
 };
 
-module.exports(recommendPlaylist);
+const createPlaylist = async (req, res) => {
+  const { selected, playlistName } = req.body;
+  };
+
+module.exports = { recommendPlaylist, createPlaylist };

@@ -1,6 +1,6 @@
 import nc from "next-connect";
-import { verifyEmail } from "../../../../controllers/authController";
-import connectDb from "../../../../middleware/connectDatabase";
+import { createPlaylist } from "../../../controllers/playlistController";
+import connectDb from "../../../middleware/connectDatabase";
 
 const router = nc({
   onError: (err, req, res) => {
@@ -12,6 +12,6 @@ const router = nc({
   },
 });
 
-router.use(connectDb).post(verifyEmail);
+router.use(connectDb).post(createPlaylist);
 
 export default router;

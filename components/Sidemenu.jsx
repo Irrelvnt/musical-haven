@@ -11,13 +11,13 @@ import classNames from "../utils/classNames";
 const navigation = [
   {
     name: "Home",
-    href: "/me",
+    href: "/",
     icon: <AiFillHome className="fill-white h-6 w-6" alt="home" />,
     current: true,
   },
   {
     name: "My playlists",
-    href: "/me/ebooks",
+    href: "/me/myplaylists",
     icon: <FaBook className="fill-white h-6 w-6" alt="ebook" />,
     current: false,
   },
@@ -29,7 +29,7 @@ const secondaryNavigation = [
     icon: <IoHelpBuoySharp className="fill-white h-6 w-6" alt="help" />,
   },
   {
-    name: "Confidentialité",
+    name: "Privacy policy",
     href: "/me/privacy",
     icon: <MdPrivacyTip className="fill-white h-6 w-6" alt="privacy" />,
   },
@@ -37,7 +37,7 @@ const secondaryNavigation = [
 const Profile = {
   name: "Profil",
   href: "/me/profile",
-  icon: <MdAccountCircle className="fill-white h-6 w-6" alt="Profile" />,
+  icon: <MdAccountCircle className="fill-white h-8 w-8" alt="Profile" />,
   current: false,
 };
 
@@ -47,7 +47,7 @@ export default function Sidemenu({ sidebarOpen, setSidebarOpen }) {
     <Transition.Root show={sidebarOpen} as={Fragment}>
       <Dialog
         as="div"
-        className="fixed inset-0 flex z-40 lg:hidden"
+        className="fixed inset-0 flex z-40 "
         onClose={setSidebarOpen}
       >
         <Transition.Child
@@ -59,7 +59,7 @@ export default function Sidemenu({ sidebarOpen, setSidebarOpen }) {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Dialog.Overlay className="fixed inset-0 bg-black backdrop-blur-sm bg-opacity-75" />
+          <Dialog.Overlay className="fixed inset-x-0 top-12 bottom-0 bg-black backdrop-blur-sm bg-opacity-75" />
         </Transition.Child>
         <Transition.Child
           as={Fragment}
@@ -72,15 +72,18 @@ export default function Sidemenu({ sidebarOpen, setSidebarOpen }) {
         >
           <div className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-card">
             <nav className="mt-20 flex-shrink-0 h-full" aria-label="Sidebar">
-              <div className="px-2 space-y-2">
+              <p className="px-2 sm:px-4 font-bold text-lg sm:text-xl text-white mb-6">
+                Musical haven
+              </p>
+              <div className="px-2 sm:px-4 space-y-2">
                 {navigation.map((item, idx) => (
                   <Link
                     key={idx}
                     href={item.href}
                     className={classNames(
-                      router.pathname === item.href
-                        ? "bg-white text-white rounded-md"
-                        : "bg-white/10 rounded-md text-primary hover:text-white hover:bg-white/40",
+                      router.asPath === item.href
+                        ? "bg-tertiary rounded-md"
+                        : "bg-primary/40 rounded-md  sm:hover:bg-secondary/40",
                       "group flex items-center px-2 py-2 text-base font-medium"
                     )}
                     aria-current={item.current ? "page" : undefined}
@@ -90,7 +93,7 @@ export default function Sidemenu({ sidebarOpen, setSidebarOpen }) {
                   </Link>
                 ))}
               </div>
-              <div className="px-2 mt-6 h-full">
+              <div className="px-2 sm:px-4 mt-6 h-full">
                 {secondaryNavigation.map((item) => (
                   <Link
                     key={item.name}
@@ -98,7 +101,7 @@ export default function Sidemenu({ sidebarOpen, setSidebarOpen }) {
                     className={classNames(
                       router.pathname === item.href
                         ? "text-white"
-                        : "text-primary sm:hover:text-white sm:hover:bg-white/10",
+                        : "text-white sm:hover:bg-secondary/40",
                       "group flex items-center px-2 py-2 text-base font-medium rounded-md"
                     )}
                   >
@@ -107,31 +110,24 @@ export default function Sidemenu({ sidebarOpen, setSidebarOpen }) {
                   </Link>
                 ))}
               </div>
-              <div className="absolute bottom-10 w-full px-2">
+              <div className="absolute sm:px-4 flex justify-between items-center bottom-10 w-full px-2">
                 <Link
                   href={Profile.href}
                   className={
                     router.asPath === "/me/profile"
-                      ? "flex items-center opacity-85 w-full bg-white p-2 rounded-lg mb-2"
-                      : "flex items-center opacity-85 w-full bg-white/10 p-2 rounded-lg sm:hover:bg-white/30 mb-2"
+                      ? "flex items-center opacity-85 bg-primary p-2 rounded-lg"
+                      : "flex items-center opacity-85 bg-secondary/50 p-2 rounded-lg sm:hover:bg-secondary/30"
                   }
                 >
                   {Profile.icon}
-                  <p className="text-md font-semibold text-white ml-4">
-                    {Profile.name}
-                  </p>
                 </Link>
-                <button className="flex items-center opacity-85 w-full bg-white/10 p-2 rounded-lg">
-                  <IoLogOut className="fill-white w-5 h-5 " />
-                  <p className="text-md font-semibold text-white ml-4">
-                    Logout
-                  </p>
+                <button className="flex items-center opacity-85 bg-secondary/50 p-2 rounded-lg sm:hover:bg-secondary/30">
+                  <IoLogOut className="fill-white w-8 h-8 " />
                 </button>
               </div>
             </nav>
           </div>
         </Transition.Child>
-        <div className="flex-shrink-0 w-14" aria-hidden="true"></div>
       </Dialog>
     </Transition.Root>
   );

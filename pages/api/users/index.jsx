@@ -1,4 +1,3 @@
-// pages/api/hello.js
 import nc from "next-connect";
 import { getNumberOfUsers } from "../../../../controllers/userController";
 import {

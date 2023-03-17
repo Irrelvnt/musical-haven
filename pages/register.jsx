@@ -5,7 +5,7 @@ import { BsFacebook, BsFillArrowLeftCircleFill } from "react-icons/bs";
 import { useLogin } from "../hooks/useLogin";
 import Layout from "../components/Layout";
 
-export default function Login() {
+export default function Register() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const { handleChange, handleSubmit } = useLogin();
@@ -72,11 +72,11 @@ export default function Login() {
                 <div className="flex gap-3 items-center mx-2">
                   <img src="/logo.svg" className="h-6 md:h-6 ml-1" />
                   <h1 className="text-xl first-letter:md:text-[1.8rem] font-bold text-gray-700">
-                    Welcome back!
+                    Welcome aboard!
                   </h1>
                 </div>
                 <p className="mt-4 text-gray-700 text-[1rem] mx-3">
-                  Sign in using
+                  Sign up using
                 </p>
                 <div className="mt-2 grid grid-cols-2 gap-3 mx-3">
                   <div>
@@ -111,7 +111,7 @@ export default function Login() {
                     <span className="px-2 bg-white ">
                       {error ? (
                         <span className="text-red-400 font-semibold">
-                          Email and/or password incorrect
+                          Email already in use!
                         </span>
                       ) : (
                         <span className="text-gray-600 text-[1.05rem]">
@@ -194,10 +194,10 @@ export default function Login() {
                       </div>
                       <div className="text-sm mx-3">
                         <Link
-                          href="/forgot"
+                          href="/login"
                           className="font-medium text-tertiary lg:hover:text-tertiary lg:hover:underline transition"
                         >
-                          Forgot my password
+                          Log in
                         </Link>
                       </div>
                     </div>
@@ -206,7 +206,7 @@ export default function Login() {
                       disabled={loading}
                       className="w-full flex justify-center py-3 px-4  rounded-b-xl shadow-sm text-sm font-medium text-white bg-tertiary lg:hover:bg-octonary transition border border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-tertiary"
                     >
-                      Sign in
+                      Sign up
                     </button>
                   </form>
                 </div>

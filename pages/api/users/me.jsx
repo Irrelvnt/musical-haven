@@ -1,4 +1,3 @@
-// pages/api/hello.js
 import nc from "next-connect";
 import { showCurrentUser } from "../../../controllers/userController";
 import { authenticateUser } from "../../../middleware/auth";
