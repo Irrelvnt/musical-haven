@@ -3,7 +3,7 @@ import { AiFillPlayCircle } from "react-icons/ai";
 import { FaSearch } from "react-icons/fa";
 import { HiHeart } from "react-icons/hi";
 import Layout from "../../components/Layout";
-import Song from "../../components/Song";
+import Song from "../../components/primitive/Song";
 import { usePlaylist } from "../../store/playlist";
 
 export default function Playlist() {

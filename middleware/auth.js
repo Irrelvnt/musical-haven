@@ -1,6 +1,6 @@
 import { getCookies } from "cookies-next";
 import { UnauthenticatedError } from "../errors";
-import { findOne } from "../models/Token";
+import { findOne } from "../Models/Token";
 import { attachCookiesToResponse, isTokenValid } from "../utils";
 
 const authenticateUser = async (req, res, next) => {
