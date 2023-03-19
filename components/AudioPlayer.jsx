@@ -1,3 +1,4 @@
+import axios from "axios";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { usePlaylist } from "../store/playlist";
@@ -6,6 +7,18 @@ export default function Player() {
   const playlist = usePlaylist((state) => state.playlist);
   const currentSong = usePlaylist((state) => state.currentSong);
   const setCurrentSong = usePlaylist((state) => state.setCurrentSong);
+
+  const getPlaybackurl = async (url) => {
+    await axios
+      .post("/api/music", { url })
+      .then((res) => {
+        setCurrentSong(res.data.url);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <AudioPlayer
       src={currentSong}
@@ -27,6 +40,7 @@ export default function Player() {
         }
         setCurrentSong(playlist[index - 1]?.url);
       }}
+      onPlay={(e) => getPlaybackurl(currentSong)}
     />
   );
 }

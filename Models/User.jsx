@@ -1,7 +1,37 @@
 import { Schema, models, model } from "mongoose";
 import { isEmail } from "validator";
 import { genSalt, hash, compare } from "bcryptjs";
-
+const SongSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+      minlength: 2,
+      maxlength: 50,
+    },
+    artist: {
+      type: String,
+      required: [true, "Artist is required"],
+      minlength: 2,
+      maxlength: 50,
+    },
+    thumbnail: {
+      type: String,
+      required: [true, "Thumbnail is required"],
+      minlength: 2,
+      maxlength: 400,
+    },
+    url: {
+      type: String,
+      required: [true, "Url is required"],
+      minlength: 2,
+      maxlength: 400,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 const UserSchema = new Schema(
   {
     email: {
@@ -19,8 +49,9 @@ const UserSchema = new Schema(
       minlength: 6,
     },
     favourites: {
-      type: Array,
+      type: [SongSchema],
       required: false,
+      default: [],
     },
   },
   {

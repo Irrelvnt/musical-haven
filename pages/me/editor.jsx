@@ -1,34 +1,49 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { AiFillPlayCircle } from "react-icons/ai";
 import { FaSearch } from "react-icons/fa";
-import { HiHeart } from "react-icons/hi";
+import { MdEditNote } from "react-icons/md";
 import Layout from "../../components/layout";
-import Song from "../../components/song";
+import Song from "../../components/primitive/Song";
+import useAuth from "../../hooks/useAuth";
 import { usePlaylist } from "../../store/playlist";
 
-export default function Playlist() {
+export default function Editor() {
   const [results, setResults] = useState([]);
+  const [selected, setSelected] = useState([]);
   const setPlaylist = usePlaylist((state) => state.setPlaylist);
   const setCurrentSong = usePlaylist((state) => state.setCurrentSong);
   const [search, setSearch] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { data: user } = useAuth();
 
+  const getRecommendations = async () => {
+    try {
+      const { data } = await axios.get("/api/recommendation", {
+        params: { name: search },
+      });
+      console.log(data.videos[0]);
+      setResults(data.videos);
+    } catch (e) {}
+    setLoading(false);
+  };
   const handleChange = (event) => {
     event.preventDefault();
     const { value } = event.target;
     setSearch(value);
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoading(true);
-    results.filter(
-      (result) =>
-        result.title.toLowerCase().includes(search.toLowerCase()) ||
-        result.artist.toLowerCase().includes(search.toLowerCase())
-    );
-    setLoading(false);
+    getRecommendations();
   };
-
+  useEffect(() => {
+    if (user) {
+      setResults(user?.user.favourites);
+      setLoading(false);
+    }
+  }, [user]);
   return (
     <Layout>
       <main className="relative w-screen h-screen max-w-4xl mx-auto">
@@ -61,10 +76,8 @@ export default function Playlist() {
           <div className="rounded-lg px-4 py-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <HiHeart className="w-6 h-6 fill-red-500" />
-                <p className="text-xl font-medium text-gray-100 ml-4">
-                  Favourites
-                </p>
+                <MdEditNote className="w-7 h-7 fill-gray-200" />
+                <p className="text-xl font-medium text-gray-100 ml-4">Editor</p>
               </div>
               <div
                 className="flex items-center hover:bg-primary/20 transition rounded-lg px-2 cursor-pointer mt-1"
@@ -119,10 +132,10 @@ export default function Playlist() {
                       }}
                     >
                       <Song
-                        artist={item.channel}
-                        title={item.title}
-                        cover={item.thumbnail}
-                        time="3:00"
+                        artist={item.snippet?.channelTitle}
+                        title={item.snippet.title}
+                        cover={item.snippet.thumbnails?.high.url}
+                        time={item.contentDetails?.duration}
                         selected={selected.includes(item)}
                       />
                     </div>
@@ -133,7 +146,7 @@ export default function Playlist() {
                         Nothing to show
                       </p>
                       <p className="text-center text-gray-400 mt-12">
-                        Start by adding some songs to your favourites
+                        Start by searching for a song
                       </p>
                     </div>
                   )}

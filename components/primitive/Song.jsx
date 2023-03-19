@@ -2,6 +2,13 @@ import Image from "next/image";
 import { BsCheck } from "react-icons/bs";
 
 export default function Song({ title, artist, cover, time, selected, dark }) {
+  function cutText(str, num) {
+    if (str.length > num) {
+      return str.slice(0, num) + "...";
+    } else {
+      return str;
+    }
+  }
   return (
     <div className="flex items-center justify-between rounded-md">
       <div className="flex gap-4">
@@ -18,7 +25,7 @@ export default function Song({ title, artist, cover, time, selected, dark }) {
             width={50}
             height={50}
             alt="cover"
-            className="rounded-lg"
+            className="rounded-lg object-cover"
           />
         </div>
         <div className="flex flex-col justify-around px-2">
@@ -29,9 +36,11 @@ export default function Song({ title, artist, cover, time, selected, dark }) {
                 : "font-semibold text-lg text-gray-100"
             }
           >
-            {title}
+            {cutText(title, 18)}
           </p>
-          <p className="font-semibold text-sm text-textlight ">{artist}</p>
+          <p className="font-semibold text-sm text-textlight ">
+            {cutText(artist, 30)}
+          </p>
         </div>
       </div>
       <p className="font-bold text-sm text-textlight">{time}</p>

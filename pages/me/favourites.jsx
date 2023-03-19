@@ -1,11 +1,10 @@
-import axios from "axios";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillPlayCircle } from "react-icons/ai";
 import { FaSearch } from "react-icons/fa";
 import { HiHeart } from "react-icons/hi";
 import Layout from "../../components/layout";
 import Song from "../../components/song";
+import useAuth from "../../hooks/useAuth";
 import { usePlaylist } from "../../store/playlist";
 
 export default function Favourites() {
@@ -14,15 +13,8 @@ export default function Favourites() {
   const setCurrentSong = usePlaylist((state) => state.setCurrentSong);
   const [search, setSearch] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { data: user } = useAuth();
 
-  const getFavourites = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get("/api/playlist");
-      setResults(res.data);
-    } catch (e) {}
-    setLoading(false);
-  };
   const handleChange = (event) => {
     event.preventDefault();
     const { value } = event.target;
@@ -39,9 +31,11 @@ export default function Favourites() {
     setLoading(false);
   };
   useEffect(() => {
-    getFavourites();
-  }, []);
-
+    if (user) {
+      setResults(user?.user.favourites);
+      setLoading(false);
+    }
+  }, [user]);
   return (
     <Layout>
       <main className="relative w-screen h-screen max-w-4xl mx-auto">

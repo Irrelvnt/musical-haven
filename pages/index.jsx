@@ -4,13 +4,14 @@ import Link from "next/link";
 import { useState } from "react";
 import { HiHeart, HiPlus } from "react-icons/hi";
 import { IoClose, IoCompassSharp } from "react-icons/io5";
+import { MdEditNote } from "react-icons/md";
 import { RxShuffle } from "react-icons/rx";
 import Layout from "../components/Layout";
-import Song from "../components/Song";
+import Song from "../components/primitive/Song";
+import useAuth from "../hooks/useAuth";
 import { useCreatePlaylist } from "../hooks/useCreatePlaylist";
 import { usePlaylist } from "../store/playlist";
 import classNames from "../utils/classNames";
-import { useAuth } from "../hooks/useAuth";
 
 const shuffleSongs = (array) => {
   var shuffled = array;
@@ -28,15 +29,16 @@ const Home = () => {
   const [createPlaylist, setCreatePlaylist] = useState(false);
   const [selected, setSelected] = useState([]);
   const [stat, setStat] = useState(null);
-  const { data: user } = useAuth();
   const { handleChange, handleSubmit } = useCreatePlaylist();
 
   const [shuffle, setShuffle] = useState(false);
+  const { data: user } = useAuth();
 
   const updateFavourites = async (songs) => {
     try {
       await axios.post("/api/playlist/favourites", {
         songs,
+        _id: user.user._id,
       });
     } catch (e) {}
   };
@@ -184,15 +186,17 @@ const Home = () => {
             </span>
           </div>
           <div className="flex gap-4 w-full mt-4 overflow-auto sm:overflow-hidden">
-            <Link
-              href="/favourites"
-              className="relative w-36 h-36 bg-card rounded-md transition hover:scale-105"
-            >
-              <HiHeart size={"2rem"} color="red" className="mx-14 mt-12" />
-              <p className="absolute z-20 bottom-3 left-5 font-semibold text-sm ">
-                Favorites
-              </p>
-            </Link>
+            {user?.user && (
+              <Link
+                href="/me/favourites"
+                className="relative w-36 h-36 bg-card rounded-md transition hover:scale-105"
+              >
+                <HiHeart size={"2rem"} color="red" className="mx-14 mt-12" />
+                <p className="absolute z-20 bottom-3 left-5 font-semibold text-sm ">
+                  Favorites
+                </p>
+              </Link>
+            )}
             <Link
               href="/discover"
               className="relative w-36 h-36 bg-card rounded-md transition hover:scale-105"
@@ -205,6 +209,20 @@ const Home = () => {
                 Discover
               </p>
             </Link>
+            {user?.user && (
+              <Link
+                href="/me/editor"
+                className="relative w-36 h-36 bg-card rounded-md transition hover:scale-105"
+              >
+                <MdEditNote
+                  size={"2rem"}
+                  className="mx-14 mt-12 fill-gray-200"
+                />
+                <p className="absolute z-20 bottom-3 left-5 font-semibold text-sm ">
+                  Editor
+                </p>
+              </Link>
+            )}
           </div>
           <div className="flex justify-between  items-center mt-10 mb-4 relative z-10">
             <p className="font-semibold text-lg">Currently playing</p>
@@ -223,16 +241,18 @@ const Home = () => {
                   "hover:bg-primary/40 rounded-full cursor-pointer"
                 )}
               />
-              <HiHeart
-                onClick={() => {
-                  if (selected.length === 0) {
-                    return;
-                  }
-                  updateFavourites(selected);
-                }}
-                size={20}
-                className="hover:bg-primary/40 rounded-full fill-gray-200 cursor-pointer"
-              />
+              {user?.user && (
+                <HiHeart
+                  onClick={() => {
+                    if (selected.length === 0) {
+                      return;
+                    }
+                    updateFavourites(selected);
+                  }}
+                  size={20}
+                  className="hover:bg-primary/40 rounded-full fill-gray-200 cursor-pointer"
+                />
+              )}
             </div>
           </div>
           <div className="flex flex-col gap-4 mt-4 overflow-y-auto relative z-10">

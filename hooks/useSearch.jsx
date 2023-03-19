@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 export const useSearch = (setResults) => {
-  const router = useRouter();
   const [search, setSearch] = useState({ name: "" });
   const handleChange = (event) => {
     event.preventDefault();
