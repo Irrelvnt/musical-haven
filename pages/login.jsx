@@ -17,7 +17,7 @@ export default function Login() {
   return (
     <Layout>
       <div
-        className="overflow-hidden relative h-fit transition duration-700 "
+        className="overflow-hidden relative h-screen transition duration-700 "
         style={{ opacity }}
       >
         <div className="relative flex mt-12 justify-center">

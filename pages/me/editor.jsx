@@ -52,15 +52,6 @@ export default function Editor() {
   return (
     <Layout>
       <main className="relative w-screen h-screen max-w-4xl mx-auto">
-        <div
-          className={
-            loading
-              ? "absolute w-full h-full bg-black/60 flex flex-col items-center justify-center transition z-40"
-              : "hidden"
-          }
-        >
-          <div className="h-12 w-12 border-4 border-t-tertiary border-r-tertiary border-l-tertiary rounded-full animate-spin transition opacity-100" />
-        </div>
         <div className="fixed inset-0 z-0 transform-gpu overflow-hidden blur-3xl ">
           <svg
             className="relative opacity-100 left-[calc(50%-11rem)] h-[21.1875rem] max-w-none -translate-x-1/2 rotate-[30deg] sm:left-[calc(50%-30rem)] sm:h-[42.375rem]"
@@ -173,6 +164,15 @@ export default function Editor() {
                       />
                     </div>
                   ))}
+                  <div
+                    className={
+                      loading
+                        ? "absolute w-full h-full  flex flex-col items-center justify-center transition z-40"
+                        : "hidden"
+                    }
+                  >
+                    <div className="h-12 w-12 border-4 border-t-tertiary border-r-tertiary border-l-tertiary rounded-full animate-spin transition opacity-100" />
+                  </div>
                   {results.length === 0 && !loading && (
                     <div className="space-y-4">
                       <p className="text-center font-bold text-lg text-gray-200 mt-12">
