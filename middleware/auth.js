@@ -23,7 +23,7 @@ const authenticateUser = async (req, res, next) => {
     });
 
     if (!existingToken || !existingToken?.isValid) {
-      UnauthenticatedError(res, "Invalid");
+      UnauthenticatedError(res, "Invalid2");
     }
 
     attachCookiesToResponse({
@@ -36,7 +36,7 @@ const authenticateUser = async (req, res, next) => {
     req.user = payload.user;
     await next();
   } catch (error) {
-    return UnauthenticatedError(res, "Invalid");
+    return UnauthenticatedError(res, "Invalid3");
   }
 };
 

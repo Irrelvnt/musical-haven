@@ -198,20 +198,16 @@ const Home = () => {
                 Discover
               </p>
             </Link>
-            {user?.user && (
-              <Link
-                href="/me/editor"
-                className="relative w-36 h-36 bg-card rounded-md transition hover:scale-105"
-              >
-                <MdEditNote
-                  size={"2rem"}
-                  className="mx-14 mt-12 fill-gray-200"
-                />
-                <p className="absolute z-20 bottom-3 left-5 font-semibold text-sm ">
-                  Editor
-                </p>
-              </Link>
-            )}
+
+            <Link
+              href="/me/editor"
+              className="relative w-36 h-36 bg-card rounded-md transition hover:scale-105"
+            >
+              <MdEditNote size={"2rem"} className="mx-14 mt-12 fill-gray-200" />
+              <p className="absolute z-20 bottom-3 left-5 font-semibold text-sm ">
+                Editor
+              </p>
+            </Link>
           </div>
           <div className="flex justify-between  items-center mt-10 mb-4 relative z-10">
             <p className="font-semibold text-lg">Currently playing</p>

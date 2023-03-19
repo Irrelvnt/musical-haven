@@ -3,9 +3,9 @@ import { useState } from "react";
 import { AiFillPlayCircle } from "react-icons/ai";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { MdEditNote } from "react-icons/md";
-import Layout from "../../components/Layout";
-import Song from "../../components/primitive/Song";
-import { usePlaylist } from "../../store/playlist";
+import Layout from "../components/Layout";
+import Song from "../components/primitive/Song";
+import { usePlaylist } from "../store/playlist";
 
 export default function Editor() {
   const [results, setResults] = useState([]);
