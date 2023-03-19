@@ -13,7 +13,6 @@ export default function Editor() {
   const setPlaylist = usePlaylist((state) => state.setPlaylist);
   const playlist = usePlaylist((state) => state.playlist);
   const setCurrentSong = usePlaylist((state) => state.setCurrentSong);
-  const currentSong = usePlaylist((state) => state.currentSong);
   const [search, setSearch] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -46,6 +45,9 @@ export default function Editor() {
       cover: item.snippet.thumbnails?.high.url,
       time: item.contentDetails?.duration,
     };
+  };
+  const getUrl = (item) => {
+    return "https://www.youtube.com/watch?v=" + item;
   };
   return (
     <Layout>
@@ -98,8 +100,7 @@ export default function Editor() {
                   setPlaylist(
                     selected.map((item) => getSongInfo(results[item]))
                   );
-                  console.log(playlist[0].url);
-                  setCurrentSong(playlist[0].url);
+                  setCurrentSong(getUrl(results[selected[0]].id.videoId));
                 }}
               >
                 <p className="text-base font-medium text-gray-100 mb-1 mr-2">
@@ -138,13 +139,11 @@ export default function Editor() {
                   <button
                     onClick={(e) => {
                       e.preventDefault();
-                      if (selected.length > 0) {
-                        setPlaylist(
-                          selected.map((item) => getSongInfo(results[item]))
-                        );
-                        setCurrentSong(playlist[playlist.length - 1]?.url);
-                        console.log(currentSong);
-                      }
+                      setPlaylist([
+                        ...selected.map((item) => getSongInfo(results[item])),
+                        ...playlist,
+                      ]);
+                      setCurrentSong(getUrl(results[selected[0]].id.videoId));
                     }}
                     className="flex text-gray-200 font-medium items-center space-x-2 rounded-lg px-2 py-1 hover:bg-primary/40 active:bg-primary/60 transition"
                   >

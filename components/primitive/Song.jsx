@@ -3,8 +3,8 @@ import { BsCheck } from "react-icons/bs";
 
 export default function Song({ title, artist, cover, time, selected, dark }) {
   function cutText(str, num) {
-    if (str.length > num) {
-      return str.slice(0, num) + "...";
+    if (str?.length > num) {
+      return str?.slice(0, num) + "...";
     } else {
       return str;
     }

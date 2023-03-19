@@ -3,7 +3,7 @@ import { isEmail } from "validator";
 import { genSalt, hash, compare } from "bcryptjs";
 const SongSchema = new Schema(
   {
-    name: {
+    title: {
       type: String,
       required: [true, "Name is required"],
       minlength: 2,
@@ -15,11 +15,14 @@ const SongSchema = new Schema(
       minlength: 2,
       maxlength: 50,
     },
-    thumbnail: {
+    cover: {
       type: String,
       required: [true, "Thumbnail is required"],
       minlength: 2,
       maxlength: 400,
+    },
+    time: {
+      type: Number,
     },
     url: {
       type: String,

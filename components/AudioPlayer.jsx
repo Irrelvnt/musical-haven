@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { usePlaylist } from "../store/playlist";
@@ -7,13 +7,13 @@ import { usePlaylist } from "../store/playlist";
 export default function Player() {
   const playlist = usePlaylist((state) => state.playlist);
   const currentSong = usePlaylist((state) => state.currentSong);
-  const setCurrentSong = usePlaylist((state) => state.setCurrentSong);
+  const [playing, setPlaying] = useState(null);
   useEffect(() => {
     const getPlaybackurl = async (url) => {
       await axios
         .post("/api/music", { url: url })
         .then((res) => {
-          setCurrentSong(res.data.musicInfo.url);
+          setPlaying(res.data.musicInfo.url);
         })
         .catch((err) => {
           console.log(err);
@@ -22,29 +22,15 @@ export default function Player() {
     if (currentSong) {
       getPlaybackurl(currentSong);
     }
-  }, [playlist]);
+  }, [playlist, currentSong]);
 
   return (
     <AudioPlayer
-      src={currentSong}
+      src={playing}
       showSkipControls={false}
       showDownloadProgress
       showFilledProgress
       layout="stacked"
-      onClickNext={() => {
-        const index = playlist?.findIndex((song) => song?.url === url);
-        if (index === playlist?.length - 1) {
-          return;
-        }
-        setCurrentSong(playlist[index + 1]?.url);
-      }}
-      onClickPrevious={() => {
-        const index = playlist?.findIndex((song) => song?.url === url);
-        if (index === 0) {
-          return;
-        }
-        setCurrentSong(playlist[index - 1]?.url);
-      }}
     />
   );
 }

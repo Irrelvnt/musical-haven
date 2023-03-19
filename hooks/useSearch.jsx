@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
 export const useSearch = (setResults) => {

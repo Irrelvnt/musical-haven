@@ -2,7 +2,7 @@ import { Schema, models, model } from "mongoose";
 
 const SongSchema = new Schema(
   {
-    name: {
+    title: {
       type: String,
       required: [true, "Name is required"],
       minlength: 2,
@@ -14,11 +14,14 @@ const SongSchema = new Schema(
       minlength: 2,
       maxlength: 50,
     },
-    thumbnail: {
+    cover: {
       type: String,
       required: [true, "Thumbnail is required"],
       minlength: 2,
       maxlength: 400,
+    },
+    time: {
+      type: Number,
     },
     url: {
       type: String,

@@ -80,6 +80,12 @@ const updateFavourites = async (req, res) => {
       favourites.push(song);
     }
   }
+  await user.updateOne(
+    { _id },
+    { favourites },
+    { new: true, runValidators: true }
+  );
+  await user.save();
   res.status(StatusCodes.OK).json({ message: "favourites playlist updated" });
 };
 
@@ -91,7 +97,6 @@ const getFavourites = async (req, res) => {
 
 const createPlaylist = async (req, res) => {
   const { songs, name } = req.body;
-  console.log(req.user);
   const _id = req.user.userId;
   const playlist = await Playlist.create({
     name,

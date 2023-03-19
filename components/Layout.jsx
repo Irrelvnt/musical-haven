@@ -26,24 +26,6 @@ const navigation = [
     icon: <IoCompassSharp className="fill-white h-6 w-6" alt="home" />,
     current: true,
   },
-  {
-    name: "Favourites",
-    href: "/me/favourites",
-    icon: <HiHeart className="fill-white h-6 w-6" alt="home" />,
-    current: true,
-  },
-  {
-    name: "My playlists",
-    href: "/me/myplaylists",
-    icon: <BsFillMusicPlayerFill className="fill-white h-6 w-6" alt="ebook" />,
-    current: false,
-  },
-  {
-    name: "Play now",
-    href: "/me/player",
-    icon: <FaMusic className="fill-white h-6 w-6" alt="ebook" />,
-    current: false,
-  },
 ];
 const secondaryNavigation = [
   {

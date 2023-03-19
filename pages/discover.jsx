@@ -3,7 +3,7 @@ import { AiFillPlayCircle } from "react-icons/ai";
 import { FaSearch } from "react-icons/fa";
 import { IoCompassSharp } from "react-icons/io5";
 import Layout from "../components/layout";
-import Song from "../components/song";
+import Song from "../components/primitive/song";
 import { useSearch } from "../hooks/useSearch";
 
 export default function Discover() {
@@ -95,6 +95,7 @@ export default function Discover() {
                       key={idx}
                       className="hover:bg-primary/20 transition rounded-lg pr-2 cursor-pointer"
                       onClick={() => {
+                        console.log(results);
                         if (selected.includes(item)) {
                           setSelected(selected.filter((i) => i !== item));
                         } else {
@@ -104,8 +105,8 @@ export default function Discover() {
                     >
                       <Song
                         artist={item.channel}
-                        title={item.title}
-                        cover={item.thumbnail}
+                        title={item.name}
+                        cover={""}
                         time="3:00"
                         selected={selected.includes(item)}
                       />

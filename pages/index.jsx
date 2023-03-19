@@ -2,10 +2,10 @@ import axios from "axios";
 import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
+import { BsFillPlayFill } from "react-icons/bs";
 import { HiHeart, HiPlus } from "react-icons/hi";
 import { IoClose, IoCompassSharp } from "react-icons/io5";
 import { MdEditNote } from "react-icons/md";
-import { RxShuffle } from "react-icons/rx";
 import Layout from "../components/Layout";
 import Song from "../components/primitive/Song";
 import useAuth from "../hooks/useAuth";
@@ -13,25 +13,14 @@ import { useCreatePlaylist } from "../hooks/useCreatePlaylist";
 import { usePlaylist } from "../store/playlist";
 import classNames from "../utils/classNames";
 
-const shuffleSongs = (array) => {
-  var shuffled = array;
-  for (var i = shuffled.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = shuffled[i];
-    shuffled[i] = shuffled[j];
-    shuffled[j] = temp;
-  }
-  return shuffled;
-};
-
 const Home = () => {
   const playlist = usePlaylist((state) => state.playlist);
+  const setCurrentSong = usePlaylist((state) => state.setCurrentSong);
   const [createPlaylist, setCreatePlaylist] = useState(false);
   const [selected, setSelected] = useState([]);
   const [stat, setStat] = useState(null);
   const { handleChange, handleSubmit } = useCreatePlaylist();
 
-  const [shuffle, setShuffle] = useState(false);
   const { data: user } = useAuth();
 
   const updateFavourites = async (songs) => {
@@ -53,22 +42,22 @@ const Home = () => {
           {createPlaylist && (
             <div className="absolute z-40 inset-0 px-4">
               <div
-                className={
-                  stat === "loading"
-                    ? "absolute inset-0 bg-white/60 flex flex-col items-center justify-center transition rounded-xl z-40"
-                    : "hidden"
-                }
-              >
-                <div className="h-12 w-12 border-4 border-t-tertiary border-r-tertiary border-l-tertiary rounded-full animate-spin transition opacity-100" />
-                <span className="text-lg text-gray-600 font-semibold mt-6">
-                  Crearting playlist...
-                </span>
-              </div>
-              <div
                 className="absolute inset-0 w-full h-full backdrop-blur-sm transition"
                 onClick={() => setCreatePlaylist(false)}
               />
               <div className="max-w-lg w-full mx-auto bg-card/90 rounded-lg px-4 py-3 relative z-10">
+                <div
+                  className={
+                    stat === "loading"
+                      ? "absolute inset-0 bg-black/60 flex flex-col items-center justify-center transition rounded-xl z-40"
+                      : "hidden"
+                  }
+                >
+                  <div className="h-12 w-12 border-4 border-t-tertiary border-r-tertiary border-l-tertiary rounded-full animate-spin transition opacity-100" />
+                  <span className="text-lg text-gray-600 font-semibold mt-6">
+                    Creating playlist...
+                  </span>
+                </div>
                 <div className="w-full flex justify-between">
                   <p className="text-gray-100 font-medium text-lg">
                     Create Playlist
@@ -227,19 +216,18 @@ const Home = () => {
           <div className="flex justify-between  items-center mt-10 mb-4 relative z-10">
             <p className="font-semibold text-lg">Currently playing</p>
             <div className="flex gap-4 items-center">
-              <RxShuffle
-                size={18}
+              <BsFillPlayFill
+                size={24}
                 color="#e1e1e2"
-                onClick={() => {
-                  setShuffle(true);
-                  setTimeout(() => {
-                    setShuffle(false);
-                  }, 100);
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (selected.length === 0) {
+                    setCurrentSong(playlist[0].url);
+                  } else {
+                    setCurrentSong(selected[0].url);
+                  }
                 }}
-                className={classNames(
-                  shuffle ? "bg-tertiary" : "",
-                  "hover:bg-primary/40 rounded-full cursor-pointer"
-                )}
+                className="hover:bg-primary/40 rounded-full cursor-pointer active:scale-95 active:bg-primary/40 transition"
               />
               {user?.user && (
                 <HiHeart
@@ -256,7 +244,7 @@ const Home = () => {
             </div>
           </div>
           <div className="flex flex-col gap-4 mt-4 overflow-y-auto relative z-10">
-            {(shuffle ? shuffleSongs(playlist) : playlist).map((item, idx) => (
+            {playlist.map((item, idx) => (
               <div
                 key={idx}
                 onClick={() => {
