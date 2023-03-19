@@ -105,7 +105,7 @@ const Home = () => {
                     Playlist
                   </p>
                   <div className="w-full max-h-44 overflow-auto mt-6 space-y-4">
-                    {playlist.map((item, idx) => (
+                    {selected.map((item, idx) => (
                       <div key={idx} className="flex items-center">
                         <div className="w-full rounded-lg mr-2">
                           <Song
@@ -117,8 +117,8 @@ const Home = () => {
                         </div>
                         <IoClose
                           onClick={() => {
-                            setPlaylist(
-                              playlist.filter(
+                            setSelected(
+                              selected.filter(
                                 (song) => song.title !== item.title
                               )
                             );
@@ -132,7 +132,7 @@ const Home = () => {
                     <button
                       type="submit"
                       className={classNames(
-                        playlist.length === 0
+                        selected.length === 0
                           ? "cursor-not-allowed"
                           : "md:hover:text-white md:hover:bg-[#59b7c3]",
                         "w-full max-w-[15rem] mx-auto flex justify-center p-2 md:py-2 text-sm md:text-base font-medium rounded-md text-[#21565a] bg-[#b3e5ec]  md:px-6 active:scale-95 transition"
@@ -240,14 +240,14 @@ const Home = () => {
               <div
                 key={idx}
                 onClick={() => {
-                  playlist.includes(item)
-                    ? setPlaylist(playlist.filter((i) => i !== item))
-                    : setPlaylist([...playlist, item]);
+                  selected.includes(item)
+                    ? setSelected(selected.filter((i) => i !== item))
+                    : setSelected([...selected, item]);
                 }}
                 className="hover:bg-primary/10 transition pr-2 rounded-md cursor-pointer"
               >
                 <Song
-                  selected={playlist.includes(item)}
+                  selected={selected.includes(item)}
                   title={item.title}
                   cover={item.cover}
                   time={item.time}
