@@ -1,5 +1,13 @@
 const youtubedl = require("youtube-dl-exec");
-const getMusic = async (url) => {
+const { StatusCodes } = require("http-status-codes");
+import { BadRequestError } from "../errors";
+
+const getMusic = async (req, res) => {
+  const { url } = req.body;
+  console.log(url);
+  if (!url) {
+    throw BadRequestError(res, err.message);
+  }
   var musicInfo = {
     title: "",
     thumbnail: "",
@@ -20,8 +28,7 @@ const getMusic = async (url) => {
     musicInfo.title = data.title;
     musicInfo.duration = data.duration;
     musicInfo.channel = data.uploader;
-    return musicInfo;
+    res.status(StatusCodes.OK).json({ musicInfo });
   });
 };
-
 module.exports = { getMusic };

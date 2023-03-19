@@ -1,5 +1,5 @@
 import nc from "next-connect";
-import { getMusic } from "../../../controllers/musicController";
+import { getMusic } from "../../controllers/musicController";
 
 const router = nc({
   onError: (err, req, res) => {

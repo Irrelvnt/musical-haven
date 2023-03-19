@@ -1,28 +1,27 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AiFillPlayCircle } from "react-icons/ai";
-import { FaSearch } from "react-icons/fa";
+import { FaPlus, FaSearch } from "react-icons/fa";
 import { MdEditNote } from "react-icons/md";
 import Layout from "../../components/layout";
 import Song from "../../components/primitive/Song";
-import useAuth from "../../hooks/useAuth";
 import { usePlaylist } from "../../store/playlist";
 
 export default function Editor() {
   const [results, setResults] = useState([]);
   const [selected, setSelected] = useState([]);
   const setPlaylist = usePlaylist((state) => state.setPlaylist);
+  const playlist = usePlaylist((state) => state.playlist);
   const setCurrentSong = usePlaylist((state) => state.setCurrentSong);
+  const currentSong = usePlaylist((state) => state.currentSong);
   const [search, setSearch] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const { data: user } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const getRecommendations = async () => {
     try {
       const { data } = await axios.get("/api/recommendation", {
         params: { name: search },
       });
-      console.log(data.videos[0]);
       setResults(data.videos);
     } catch (e) {}
     setLoading(false);
@@ -38,15 +37,28 @@ export default function Editor() {
     setLoading(true);
     getRecommendations();
   };
-  useEffect(() => {
-    if (user) {
-      setResults(user?.user.favourites);
-      setLoading(false);
-    }
-  }, [user]);
+
+  const getSongInfo = (item) => {
+    return {
+      url: "https://www.youtube.com/watch?v=" + item.id.videoId,
+      artist: item.snippet?.channelTitle,
+      title: item.snippet.title,
+      cover: item.snippet.thumbnails?.high.url,
+      time: item.contentDetails?.duration,
+    };
+  };
   return (
     <Layout>
       <main className="relative w-screen h-screen max-w-4xl mx-auto">
+        <div
+          className={
+            loading
+              ? "absolute w-full h-full bg-black/60 flex flex-col items-center justify-center transition z-40"
+              : "hidden"
+          }
+        >
+          <div className="h-12 w-12 border-4 border-t-tertiary border-r-tertiary border-l-tertiary rounded-full animate-spin transition opacity-100" />
+        </div>
         <div className="fixed inset-0 z-0 transform-gpu overflow-hidden blur-3xl ">
           <svg
             className="relative opacity-100 left-[calc(50%-11rem)] h-[21.1875rem] max-w-none -translate-x-1/2 rotate-[30deg] sm:left-[calc(50%-30rem)] sm:h-[42.375rem]"
@@ -81,9 +93,13 @@ export default function Editor() {
               </div>
               <div
                 className="flex items-center hover:bg-primary/20 transition rounded-lg px-2 cursor-pointer mt-1"
-                onClick={() => {
-                  setPlaylist(selected);
-                  setCurrentSong(selected[0]?.url);
+                onClick={(e) => {
+                  e.preventDefault();
+                  setPlaylist(
+                    selected.map((item) => getSongInfo(results[item]))
+                  );
+                  console.log(playlist[0].url);
+                  setCurrentSong(playlist[0].url);
                 }}
               >
                 <p className="text-base font-medium text-gray-100 mb-1 mr-2">
@@ -118,16 +134,34 @@ export default function Editor() {
                     <FaSearch className="w-6 h-6 fill-white" />
                   </button>
                 </div>
+                <div className="w-full flex justify-end mt-2">
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (selected.length > 0) {
+                        setPlaylist(
+                          selected.map((item) => getSongInfo(results[item]))
+                        );
+                        setCurrentSong(playlist[playlist.length - 1]?.url);
+                        console.log(currentSong);
+                      }
+                    }}
+                    className="flex text-gray-200 font-medium items-center space-x-2 rounded-lg px-2 py-1 hover:bg-primary/40 active:bg-primary/60 transition"
+                  >
+                    <span className="mb-[0.17rem]">add to now playing</span>
+                    <FaPlus />
+                  </button>
+                </div>
                 <div className="flex flex-col space-y-2 mt-6 relative z-20">
                   {results?.map((item, idx) => (
                     <div
                       key={idx}
                       className="hover:bg-primary/20 transition rounded-lg pr-2 cursor-pointer"
                       onClick={() => {
-                        if (selected.includes(item)) {
-                          setSelected(selected.filter((i) => i !== item));
+                        if (selected.includes(idx)) {
+                          setSelected(selected.filter((i) => i !== idx));
                         } else {
-                          setSelected([...selected, item]);
+                          setSelected([...selected, idx]);
                         }
                       }}
                     >
@@ -136,7 +170,7 @@ export default function Editor() {
                         title={item.snippet.title}
                         cover={item.snippet.thumbnails?.high.url}
                         time={item.contentDetails?.duration}
-                        selected={selected.includes(item)}
+                        selected={selected.includes(idx)}
                       />
                     </div>
                   ))}
@@ -150,15 +184,6 @@ export default function Editor() {
                       </p>
                     </div>
                   )}
-                  <div
-                    className={
-                      loading
-                        ? " flex flex-col items-center justify-center transition rounded-xl z-40 mt-12"
-                        : "hidden"
-                    }
-                  >
-                    <div className="h-12 w-12 border-4 border-t-tertiary border-r-tertiary border-l-tertiary rounded-full animate-spin transition opacity-100" />
-                  </div>
                 </div>
               </div>
             </form>
