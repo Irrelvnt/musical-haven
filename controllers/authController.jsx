@@ -1,6 +1,6 @@
 import { BadRequestError, UnauthenticatedError } from "../errors";
-import Token from "../models/Token";
-import User from "../models/User";
+import Token from "../Models/Token";
+import User from "../Models/User";
 const { StatusCodes } = require("http-status-codes");
 
 const { attachCookiesToResponse, createTokenUser } = require("../utils");

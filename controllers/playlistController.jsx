@@ -1,7 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 import { BadRequestError, UnauthenticatedError } from "../errors";
-import Playlist from "../models/Playlist";
-import User from "../models/User";
+import Playlist from "../Models/Playlist";
+import User from "../Models/User";
 
 async function getMusicVideoUrl(videoName) {
   const apiKey = process.env.YOUTUBE_API_KEY;

@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError } from "../errors";
-import User from "../models/User";
+import User from "../Models/User";
 import { attachCookiesToResponse, createTokenUser } from "../utils";
 
 const showCurrentUser = async (req, res) => {
