@@ -3,7 +3,7 @@ import { useState } from "react";
 import { AiFillPlayCircle } from "react-icons/ai";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { MdEditNote } from "react-icons/md";
-import Layout from "../../components/layout";
+import Layout from "../../components/Layout";
 import Song from "../../components/primitive/Song";
 import { usePlaylist } from "../../store/playlist";
 

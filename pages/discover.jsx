@@ -2,8 +2,8 @@ import { useState } from "react";
 import { AiFillPlayCircle } from "react-icons/ai";
 import { FaSearch } from "react-icons/fa";
 import { IoCompassSharp } from "react-icons/io5";
-import Layout from "../components/layout";
-import Song from "../components/primitive/song";
+import Layout from "../components/Layout";
+import Song from "../components/primitive/Song";
 import { useSearch } from "../hooks/useSearch";
 
 export default function Discover() {
