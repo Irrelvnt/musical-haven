@@ -1,7 +1,9 @@
 import axios from "axios";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export const useRegister = () => {
+  const router = useRouter();
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -12,10 +14,7 @@ export const useRegister = () => {
     const { name, value } = event.target;
     setValues({ ...values, [name]: value });
   };
-  const setCookie = (name, value) => {
-    const cookie = `${name}=${value}; Path=/; Max-Age=120; SameSite=Lax`;
-    document.cookie = cookie;
-  };
+
   const handleSubmit = async (event, setStat) => {
     event.preventDefault();
     setStat("loading");
@@ -32,8 +31,8 @@ export const useRegister = () => {
       await axios.post("/api/auth/register", {
         ...values,
       });
-      setCookie("email", values.email);
       setStat("success");
+      router.push("/login");
     } catch (e) {
       setStat("error");
     }

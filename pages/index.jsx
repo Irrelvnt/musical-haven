@@ -1,5 +1,4 @@
 import axios from "axios";
-import { StatusCodes } from "http-status-codes";
 import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
@@ -11,6 +10,7 @@ import Song from "../components/Song";
 import { useCreatePlaylist } from "../hooks/useCreatePlaylist";
 import { usePlaylist } from "../store/playlist";
 import classNames from "../utils/classNames";
+import { useAuth } from "../hooks/useAuth";
 
 const shuffleSongs = (array) => {
   var shuffled = array;
@@ -24,12 +24,11 @@ const shuffleSongs = (array) => {
 };
 
 const Home = () => {
-  const setPlaylist = usePlaylist((state) => state.setPlaylist);
   const playlist = usePlaylist((state) => state.playlist);
   const [createPlaylist, setCreatePlaylist] = useState(false);
   const [selected, setSelected] = useState([]);
   const [stat, setStat] = useState(null);
-  // const { data: user } = useAuth();
+  const { data: user } = useAuth();
   const { handleChange, handleSubmit } = useCreatePlaylist();
 
   const [shuffle, setShuffle] = useState(false);

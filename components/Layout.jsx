@@ -11,6 +11,7 @@ import { IoCompassSharp, IoHelpBuoySharp, IoLogOut } from "react-icons/io5";
 import { MdAccountCircle, MdPrivacyTip } from "react-icons/md";
 import classNames from "../utils/classNames";
 import AudioPlayer from "./AudioPlayer";
+import { deleteCookie } from "cookies-next";
 
 const navigation = [
   {
@@ -27,7 +28,7 @@ const navigation = [
   },
   {
     name: "Favourites",
-    href: "/favourites",
+    href: "/me/favourites",
     icon: <HiHeart className="fill-white h-6 w-6" alt="home" />,
     current: true,
   },
@@ -153,8 +154,8 @@ export default function Layout({ children }) {
                       className={classNames(
                         router.asPath === item.href
                           ? "bg-tertiary rounded-md"
-                          : "bg-primary/10 rounded-md  sm:hover:bg-secondary/40",
-                        "group flex items-center px-4 py-3 text-base font-medium"
+                          : "bg-primary/10 rounded-md sm:hover:bg-secondary/40",
+                        "group flex items-center px-3 py-2 text-base font-medium"
                       )}
                       aria-current={item.current ? "page" : undefined}
                     >
@@ -191,7 +192,14 @@ export default function Layout({ children }) {
                   >
                     {Profile.icon}
                   </Link>
-                  <button className="flex items-center opacity-85 bg-secondary/50 p-2 rounded-lg sm:hover:bg-secondary/30">
+                  <button
+                    className="flex items-center opacity-85 bg-secondary/50 p-2 rounded-lg sm:hover:bg-secondary/30"
+                    onClick={() => {
+                      deleteCookie("refreshToken");
+                      deleteCookie("accessToken");
+                      router.push("/login");
+                    }}
+                  >
                     <IoLogOut className="fill-white w-8 h-8 " />
                   </button>
                 </div>
@@ -201,7 +209,7 @@ export default function Layout({ children }) {
         </Dialog>
       </Transition.Root>
       {children}
-      <div className="h-16 w-full mt-32" />
+      <div className="h-24 w-full mt-32" />
       <div className="fixed bottom-0 w-full z-20">
         <AudioPlayer />
       </div>

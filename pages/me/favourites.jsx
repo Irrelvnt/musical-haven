@@ -4,9 +4,9 @@ import { useState } from "react";
 import { AiFillPlayCircle } from "react-icons/ai";
 import { FaSearch } from "react-icons/fa";
 import { HiHeart } from "react-icons/hi";
-import Layout from "../components/layout";
-import Song from "../components/song";
-import { usePlaylist } from "../store/playlist";
+import Layout from "../../components/layout";
+import Song from "../../components/song";
+import { usePlaylist } from "../../store/playlist";
 
 export default function Favourites() {
   const [results, setResults] = useState([]);

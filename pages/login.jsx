@@ -17,10 +17,10 @@ export default function Login() {
   return (
     <Layout>
       <div
-        className="overflow-hidden relative h-screen transition duration-700 "
+        className="overflow-hidden relative h-fit transition duration-700 "
         style={{ opacity }}
       >
-        <div className="relative h-[85vh] flex items-center justify-center">
+        <div className="relative flex mt-12 justify-center">
           <div className="absolute inset-0 z-0 transform-gpu overflow-hidden blur-3xl ">
             <svg
               className="relative opacity-100 left-[calc(50%-11rem)] h-[21.1875rem] max-w-none -translate-x-1/2 rotate-[30deg] sm:left-[calc(50%-30rem)] sm:h-[42.375rem]"
@@ -65,7 +65,7 @@ export default function Login() {
                       : "hidden"
                   }
                 >
-                  <div className="h-12 w-12 border-4 border-t-octonary border-r-octonary border-l-octonary rounded-full animate-spin transition opacity-100" />
+                  <div className="h-12 w-12 border-4 border-t-tertiary border-r-tertiary border-l-tertiary rounded-full animate-spin transition opacity-100" />
                 </div>
                 <div className="flex gap-3 items-center mx-2">
                   <IoLogIn className="fill-gray-700 w-7 h-7" />
