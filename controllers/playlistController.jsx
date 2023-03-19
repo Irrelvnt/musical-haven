@@ -149,7 +149,7 @@ const createPlaylist = async (req, res) => {
   const playlist = await Playlist.create({
     name,
     songs,
-    creator: _id,
+    // creator: _id,
   });
   res.status(StatusCodes.CREATED).json({ playlist });
 };
