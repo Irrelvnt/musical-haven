@@ -52,7 +52,7 @@ export default function Layout({ children }) {
       <div
         className={classNames(
           sidebarOpen ? "shadow-md" : " bg-background",
-          "sticky w-full z-50 top-0 flex justify-between py-2 px-4 items-center bg-background/40 transition"
+          "sticky w-full z-50 top-0 flex justify-between py-2 px-4 items-center bg-background/40 backdrop-blur-md transition"
         )}
       >
         <div
