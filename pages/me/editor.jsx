@@ -116,7 +116,7 @@ export default function Editor() {
                     id="name"
                     max={50}
                     required
-                    className="block w-full border-0 border-b text-gray-100 placeholder:text-gray-300 border-transparent bg-gray-700/70 focus:border-tertiary focus:ring-0 sm:text-sm"
+                    className="block w-full border-0 border-b text-gray-100 placeholder:text-gray-300 border-transparent bg-gray-700/20 focus:border-tertiary focus:ring-0 sm:text-sm"
                     placeholder="Song title"
                   />
                   <button
