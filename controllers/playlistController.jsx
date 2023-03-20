@@ -95,6 +95,14 @@ const getFavourites = async (req, res) => {
   res.status(StatusCodes.OK).json({ favourites: data.favourites });
 };
 
+const getPlaylist = async (req, res) => {
+  const { _id } = req.query;
+  if (!_id) throw BadRequestError(res, "please provide a playlist id");
+  const playlist = await Playlist.findOne({ _id });
+  console.log(playlist);
+  res.status(StatusCodes.OK).json({ playlist });
+};
+
 const createPlaylist = async (req, res) => {
   const { songs, name } = req.body;
   const _id = req.user.userId;
@@ -112,4 +120,5 @@ module.exports = {
   getPlaylists,
   getFavourites,
   updateFavourites,
+  getPlaylist,
 };

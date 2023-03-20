@@ -4,7 +4,6 @@ import { BadRequestError } from "../errors";
 
 const getMusic = async (req, res) => {
   const { url } = req.body;
-  console.log(url);
   if (!url) {
     throw BadRequestError(res, err.message);
   }

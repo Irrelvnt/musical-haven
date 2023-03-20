@@ -1,17 +1,14 @@
 import { Dialog, Transition } from "@headlessui/react";
+import { deleteCookie } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { AiFillHome } from "react-icons/ai";
-import { BsFillMusicPlayerFill } from "react-icons/bs";
-import { FaMusic } from "react-icons/fa";
-import { HiHeart } from "react-icons/hi";
 import { IoIosSearch } from "react-icons/io";
 import { IoCompassSharp, IoHelpBuoySharp, IoLogOut } from "react-icons/io5";
 import { MdAccountCircle, MdPrivacyTip } from "react-icons/md";
 import classNames from "../utils/classNames";
 import AudioPlayer from "./AudioPlayer";
-import { deleteCookie } from "cookies-next";
 
 const navigation = [
   {
@@ -55,7 +52,7 @@ export default function Layout({ children }) {
       <div
         className={classNames(
           sidebarOpen ? "shadow-md" : " bg-background",
-          "sticky w-full z-50 top-0 flex justify-between py-2 px-4 items-center bg-background transition"
+          "sticky w-full z-50 top-0 flex justify-between py-2 px-4 items-center bg-background/40 transition"
         )}
       >
         <div
@@ -88,7 +85,7 @@ export default function Layout({ children }) {
           />
         </div>
 
-        <p className="text-lg font-bold text-text">Musical haven</p>
+        <img src="/title.svg" className="w-36 fill-white" alt="title" />
         <Link
           href="/discover"
           aria-label="search"
@@ -112,7 +109,7 @@ export default function Layout({ children }) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0 bg-black backdrop-blur-sm md:backdrop-blur-none bg-opacity-75 overflow-clip" />
+            <Dialog.Overlay className="fixed inset-0 bg-black backdrop-blur-lg md:backdrop-blur-none bg-opacity-75 overflow-clip" />
           </Transition.Child>
           <Transition.Child
             as={Fragment}
@@ -123,12 +120,17 @@ export default function Layout({ children }) {
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <div className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-card">
+            <div className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-gray-200/20">
               <nav className="mt-20 flex-shrink-0 h-full" aria-label="Sidebar">
-                <p className="px-2 sm:px-4 font-bold text-lg sm:text-xl text-white mb-6">
-                  Musical haven
-                </p>
-                <div className="px-2 sm:px-4 space-y-2">
+                <div className="flex items-center mb-4">
+                  <img
+                    src="/logo.svg"
+                    className="w-10 ml-4 sm:ml-6 fill-white mr-4"
+                    alt="title"
+                  />
+                  <p className="font-bold text-gray-200 text-xl">Welcome!</p>
+                </div>
+                <div className="px-3 py-1 sm:px-6 space-y-2">
                   {navigation.map((item, idx) => (
                     <Link
                       key={idx}
@@ -137,7 +139,7 @@ export default function Layout({ children }) {
                         router.asPath === item.href
                           ? "bg-tertiary rounded-md"
                           : "bg-primary/10 rounded-md sm:hover:bg-secondary/40",
-                        "group flex items-center px-3 py-2 text-base font-medium"
+                        "group flex items-center px-3 py-2 text-base font-medium focus:outline-none"
                       )}
                       aria-current={item.current ? "page" : undefined}
                     >
@@ -146,7 +148,7 @@ export default function Layout({ children }) {
                     </Link>
                   ))}
                 </div>
-                <div className="px-2 sm:px-4 mt-6 h-full">
+                <div className="px-3 sm:px-6 mt-6 h-full">
                   {secondaryNavigation.map((item) => (
                     <Link
                       key={item.name}
@@ -163,7 +165,7 @@ export default function Layout({ children }) {
                     </Link>
                   ))}
                 </div>
-                <div className="absolute sm:px-4 flex justify-between items-center bottom-10 w-full px-2">
+                <div className="absolute sm:px-10 flex justify-between items-center bottom-10 w-full px-6">
                   <Link
                     href={Profile.href}
                     className={
@@ -192,7 +194,7 @@ export default function Layout({ children }) {
       </Transition.Root>
       {children}
       <div className="h-24 w-full mt-32" />
-      <div className="fixed bottom-0 w-full z-20">
+      <div className="fixed bottom-0 w-full z-20 opacity-70">
         <AudioPlayer />
       </div>
     </div>

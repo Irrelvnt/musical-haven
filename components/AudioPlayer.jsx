@@ -15,9 +15,7 @@ export default function Player() {
         .then((res) => {
           setPlaying(res.data.musicInfo.url);
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     };
     if (currentSong) {
       getPlaybackurl(currentSong);
