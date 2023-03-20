@@ -1,4 +1,6 @@
 FROM  nikolaik/python-nodejs
-EXPOSE 3000
-RUN npm install
+WORKDIR /app
+COPY package.json yarn.lock ./
+RUN yarn install
 CMD npm run build
+EXPOSE 3000
