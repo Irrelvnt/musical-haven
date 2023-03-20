@@ -167,13 +167,13 @@ export default function Editor() {
                   <div
                     className={
                       loading
-                        ? "absolute w-full h-full  flex flex-col items-center justify-center transition z-40"
+                        ? "absolute w-full h-full flex items-center justify-center transition z-40"
                         : "hidden"
                     }
                   >
                     <div className="h-12 w-12 border-4 border-t-tertiary border-r-tertiary border-l-tertiary rounded-full animate-spin transition opacity-100" />
                   </div>
-                  {results.length === 0 && !loading && (
+                  {results && results?.length === 0 && !loading && (
                     <div className="space-y-4">
                       <p className="text-center font-bold text-lg text-gray-200 mt-12">
                         Nothing to show
