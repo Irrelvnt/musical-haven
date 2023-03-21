@@ -16,7 +16,7 @@ export const useLogin = () => {
     try {
       await axios.post("/api/auth/login", login);
       setError(false);
-      router.push("/");
+      router.reload();
     } catch (e) {
       setError(true);
       setLoading(false);
