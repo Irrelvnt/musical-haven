@@ -1,6 +1,7 @@
 # Use the official Python 3 image as the base image
 FROM python:3
 
+
 # Install system dependencies for Node.js
 RUN apt-get update && \
   apt-get install -y --no-install-recommends \
@@ -8,7 +9,7 @@ RUN apt-get update && \
   gnupg \
   dirmngr \
   lsb-release && \
-  curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
+  curl -sL https://deb.nodesource.com/setup_19.x | bash - && \
   apt-get install -y nodejs && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
