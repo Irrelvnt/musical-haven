@@ -42,7 +42,7 @@ const attachCookiesToResponse = ({ req, res, user, refreshToken }) => {
     setCookie("accessToken", accessTokenJWT, {
       req,
       res,
-      domain: "musical-haven.vercel.app",
+      domain: "musical-haven.onrender.com",
       httpOnly: true,
       sameSite: true,
       secure: true,
@@ -52,7 +52,7 @@ const attachCookiesToResponse = ({ req, res, user, refreshToken }) => {
     setCookie("refreshToken", refreshTokenJWT, {
       req,
       res,
-      domain: "musical-haven.vercel.app",
+      domain: "musical-haven.onrender.com",
       httpOnly: true,
       sameSite: true,
       secure: true,
